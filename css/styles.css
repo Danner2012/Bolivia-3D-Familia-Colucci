@@ -282,44 +282,451 @@ h2 {
     border-radius: 10px;
 }
 
-/* Gallery Proceso */
-.proceso-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 3rem;
-}
-
-.proceso-card {
-    background: #111;
+/* --- Visor Directo .VOX --- */
+.vox-viewer-container {
+    display: flex;
+    background: rgba(10, 26, 46, 0.4);
+    border: 1px solid var(--color-ui-holograma);
     border-radius: 15px;
+    margin-bottom: 3rem;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
 }
 
-.proceso-card:hover {
-    transform: translateY(-10px);
+.vox-canvas-wrapper {
+    flex: 1;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+    position: relative;
+    cursor: grab;
 }
 
-.proceso-info {
-    padding: 1.5rem;
-}
+.vox-canvas-wrapper:active { cursor: grabbing; }
 
-.proceso-info h4 {
+.loading-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-family: var(--font-header);
-    margin-bottom: 0.5rem;
     color: var(--color-ui-holograma);
+    letter-spacing: 3px;
+    animation: pulse 2s infinite;
 }
 
-/* --- Reveal Animations --- */
-.vfx-reveal {
+.vox-info {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.vox-info h3 {
+    color: var(--color-ui-holograma);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.vox-info p {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    margin-bottom: 2rem;
+}
+
+.vox-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.stat .bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.stat .fill {
+    height: 100%;
+    background: var(--color-ui-holograma);
+    box-shadow: 0 0 10px var(--color-ui-holograma);
+}
+
+.status-online {
+    color: var(--color-ui-holograma);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--color-ui-holograma);
+}
+
+@media (max-width: 768px) {
+    .vox-viewer-container {
+        flex-direction: column;
+    }
+    .vox-canvas-wrapper {
+        height: 300px;
+    }
+}
+
+/* --- Experiencia Inmersiva Túnel 3D --- */
+#bitacora-launcher {
+    width: 100%;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, rgba(0,0,0,1) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--color-ui-holograma);
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+
+.warning-box {
+    background: #ff3d00;
+    color: #fff;
+    padding: 5px 20px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: inline-block;
+    animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-red {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+.launch-btn {
+    background: var(--color-ui-holograma);
+    color: #000;
+    border: none;
+    padding: 15px 40px;
+    font-family: var(--font-header);
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px var(--color-ui-holograma);
+}
+
+#inmersive-tunnel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 5000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
     opacity: 0;
-    transform: translateY(50px);
-    transition: all 1s ease-out;
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.vfx-reveal.active {
+#inmersive-tunnel.active-exp {
+    visibility: visible;
     opacity: 1;
-    transform: translateY(0);
+}
+
+#viewport-3d {
+    width: 100%;
+    height: 80%;
+    perspective: 1000px;
+    overflow: hidden;
+    position: relative;
+}
+
+#world-3d {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scene-block {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+}
+
+/* Posicionamiento en el Túnel (Profundidad Z) */
+#scene-1 { transform: translateZ(0); }
+#scene-2 { transform: translateZ(-2000px); opacity: 0; }
+#scene-3 { transform: translateZ(-4000px); opacity: 0; }
+
+.scene-content {
+    background: rgba(10, 26, 46, 0.9);
+    padding: 3rem;
+    border: 1px solid var(--color-ui-holograma);
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0, 255, 136, 0.2);
+}
+
+.scene-content h3 {
+    font-size: 2.5rem;
+    color: var(--color-ui-holograma);
+    margin-bottom: 2rem;
+}
+
+.scene-content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+.holo-preview {
+    margin-top: 2rem;
+    height: 150px;
+    border: 1px dashed var(--color-ui-holograma);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 255, 136, 0.05);
+}
+
+.tunnel-controls {
+    position: absolute;
+    top: 30px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 6000;
+}
+
+.navigation-hints {
+    position: absolute;
+    bottom: 50px;
+    text-align: center;
+    z-index: 6000;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 2px solid var(--color-ui-holograma);
+    color: var(--color-ui-holograma);
+    padding: 10px 30px;
+    font-family: var(--font-header);
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.close-exp {
+    background: none;
+    border: none;
+    color: #ff3d00;
+    font-family: var(--font-header);
+    cursor: pointer;
+}
+
+/* --- Mapa Táctico 3D Final --- */
+.global-3d-view {
+    height: 500px;
+    width: 100%;
+    background: #050505;
+    position: relative;
+    perspective: 1000px;
+    overflow: hidden;
+    border: 1px solid var(--color-ui-holograma);
+}
+
+.tactical-grid {
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    transform: rotateX(60deg) rotateZ(-10deg);
+    animation: grid-move 20s linear infinite;
+}
+
+@keyframes grid-move {
+    0% { transform: rotateX(60deg) rotateZ(-10deg) translateY(0); }
+    100% { transform: rotateX(60deg) rotateZ(-10deg) translateY(50px); }
+}
+
+.pulse-unit {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transform: translateZ(20px);
+}
+
+.pulse-unit span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.pulse-unit.masista span { background: var(--color-masista-rojo); box-shadow: 0 0 20px var(--color-masista-rojo); }
+.pulse-unit.republica span { background: var(--color-ui-sable-azul); box-shadow: 0 0 20px var(--color-ui-sable-azul); }
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+.map-overlay {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border: 1px solid var(--color-ui-holograma);
+    font-family: monospace;
+    color: var(--color-ui-holograma);
+    pointer-events: none;
+}
+
+.holo-title {
+    text-align: center;
+    color: var(--color-ui-holograma);
+    margin-bottom: 2rem;
+    letter-spacing: 5px;
+}
+
+@media (max-width: 992px) {
+    #interactive-stage {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Visualizador Holográfico 3D --- */
+.hologram-viewport {
+    perspective: 1500px;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+}
+
+.hologram-stage {
+    position: relative;
+    width: 280px;
+    height: 380px;
+    transform-style: preserve-3d;
+    animation: float-holo 6s ease-in-out infinite;
+}
+
+@keyframes float-holo {
+    0%, 100% { transform: translateY(0) rotateY(15deg); }
+    50% { transform: translateY(-20px) rotateY(-15deg); }
+}
+
+.hologram-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 255, 136, 0.05);
+    border: 2px solid var(--color-ui-holograma);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    backface-visibility: hidden;
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.1), inset 0 0 20px rgba(0, 255, 136, 0.05);
+    backdrop-filter: blur(8px);
+}
+
+.character-stats {
+    width: 100%;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 0.8rem;
+    color: var(--color-ui-holograma);
+    border-top: 1px solid rgba(0, 255, 136, 0.3);
+    padding-top: 1rem;
+}
+
+.stat-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.stat-bar {
+    width: 50%;
+    height: 4px;
+    background: rgba(0, 255, 136, 0.1);
+    position: relative;
+    border-radius: 2px;
+}
+
+.stat-fill {
+    position: absolute;
+    height: 100%;
+    background: var(--color-ui-holograma);
+    box-shadow: 0 0 10px var(--color-ui-holograma);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hologram-controls {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.control-btn {
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid var(--color-ui-holograma);
+    color: var(--color-ui-holograma);
+    padding: 10px 25px;
+    cursor: pointer;
+    font-family: var(--font-header);
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: var(--color-ui-holograma);
+    color: #000;
+    box-shadow: 0 0 20px var(--color-ui-holograma);
+}
+
+/* Animaciones de Entrada Especiales */
+.vfx-zoom-in {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 1s ease-out, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.vfx-zoom-in.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Fallback para evitar que se esconda si el script falla */
+.vfx-reveal.active, .vfx-zoom-in.active {
+    visibility: visible;
 }
 
 footer {

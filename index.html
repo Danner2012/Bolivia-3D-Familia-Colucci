@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Librerías 3D (Carga prioritaria) -->
+    <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/VOXLoader.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <!-- Star Wars Crawl Intro -->
@@ -59,7 +64,6 @@
                 <h2>Equipo de Resistencia</h2>
             </div>
             <div class="team-grid">
-                <!-- EDITAR AQUÍ LOS NOMBRES DE LOS INTEGRANTES -->
                 <div class="member-card">
                     <div class="card-inner">
                         <div class="card-front">
@@ -147,88 +151,49 @@
 
         <div class="saber-divider blue"></div>
 
-        <!-- Bitácora Inmersiva Túnel 3D -->
+        <!-- Bitácora de Personajes: Expediente Técnico -->
         <section id="proceso" class="vfx-reveal">
             <div class="section-header">
                 <span class="section-number">03</span>
-                <h2>Bitácora de Personajes</h2>
+                <h2>Archivos de la Resistencia</h2>
             </div>
 
-            <!-- Visor Directo del Modelo .vox -->
-            <div class="vox-viewer-container">
-                <div id="direct-vox-viewer" class="vox-canvas-wrapper">
-                    <p class="loading-text">SINCRONIZANDO HOLOGRAMA...</p>
-                </div>
-                <div class="vox-info">
-                    <h3>Prototipo: Personaje Base</h3>
-                    <p>Archivos recuperados de los servidores de la resistencia. Formato .VOX (MagicaVoxel).</p>
-                    <div class="vox-stats">
-                        <div class="stat"><span>INTEGRIDAD:</span> <div class="bar"><div class="fill" style="width: 85%;"></div></div></div>
-                        <div class="stat"><span>ESTADO:</span> <span class="status-online">ACTIVO</span></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="bitacora-launcher">
-                <div class="launcher-content">
-                    <div class="warning-box">ACCESO RESTRINGIDO</div>
-                    <h3>SISTEMA DE INTELIGENCIA REBELDE</h3>
-                    <p>Haz clic para inicializar la conexión neuronal con los archivos de la guerra.</p>
-                    <button class="launch-btn" onclick="startInmersiveExp()">INICIALIZAR SECUENCIA</button>
-                </div>
-            </div>
-
-            <div id="inmersive-tunnel">
-                <div class="tunnel-controls">
-                    <button class="close-exp" onclick="closeInmersiveExp()">✕ SALIR DE LA SIMULACIÓN</button>
-                    <div id="tunnel-progress">PROGRESO: 0%</div>
-                </div>
-
-                <div id="viewport-3d">
-                    <div id="world-3d">
-                        <!-- Capítulo 1 -->
-                        <div class="scene-block" id="scene-1">
-                            <div class="scene-content">
-                                <h3>CAPÍTULO I: EL TRONO</h3>
-                                <p>Jabba el Masista preside desde su trono de papel aluminio. Los droides se doblan ante el peso de la ambición.</p>
-                                <div class="holo-preview" id="scene-1-holo">CARGANDO_PROYECCION_3D...</div>
-                            </div>
-                        </div>
-
-                        <!-- Capítulo 2 -->
-                        <div class="scene-block" id="scene-2">
-                            <div class="scene-content">
-                                <h3>CAPÍTULO II: LA BARRICADA</h3>
-                                <p>Un muro de mandarinas separa a la república del caos. Los clones deliberan entre el deber y el hambre.</p>
-                                <div class="holo-preview" id="scene-2-holo">SISTEMA_STANDBY</div>
-                            </div>
-                        </div>
-
-                        <!-- Capítulo 3 -->
-                        <div class="scene-block" id="scene-3">
-                            <div class="scene-content">
-                                <h3>CAPÍTULO III: MAPA TÁCTICO</h3>
-                                <p>LA PAZ SE CONVIERTE EN EL TABLERO FINAL. LA ESTRATEGIA ES EL ÚNICO CAMINO.</p>
-                                <div class="holo-preview" id="scene-3-holo">SISTEMA_STANDBY</div>
-                            </div>
-                        </div>
+            <div class="character-dossier">
+                <div class="dossier-header">
+                    <div class="dossier-title">
+                        <h3>Sujeto: <span>Personaje_Base</span></h3>
+                        <p class="dossier-id">ID_REF: BW-7743-PROTOTIPO</p>
                     </div>
                 </div>
 
-                <div class="navigation-hints">
-                    <p>USA LAS FLECHAS O EL BOTÓN PARA AVANZAR POR EL TÚNEL</p>
-                    <button class="nav-btn" onclick="advanceTunnel()">AVANZAR ▶</button>
+                <div class="dossier-main">
+                    <div class="view-container">
+                        <div id="direct-vox-viewer" class="vox-canvas-wrapper">
+                            <p class="loading-text">INICIALIZANDO VISOR 3D...</p>
+                        </div>
+                        <div class="view-tag">MODELO INTERACTIVO VÓXEL</div>
+                    </div>
+                    
+                    <div class="view-container">
+                        <div class="render-frame">
+                            <img src="assets/render/personaje_base.png" alt="Render HQ">
+                        </div>
+                        <div class="view-tag">RENDERIZADO FINAL HQ</div>
+                    </div>
+                </div>
+
+                <div class="dossier-footer">
+                    <div class="footer-label">REPORTE TÁCTICO:</div>
+                    <p>Análisis comparativo entre el modelo de vóxeles en tiempo real y su procesamiento final de alta calidad. Este prototipo representa la unidad básica de infantería para las crónicas de la galaxia paceña.</p>
                 </div>
             </div>
         </section>
 
         <footer>
-            <p>&copy; 2026 Bolivia Wars: La Amenaza Masista. Todos los derechos reservados a la Galaxia Paceña.</p>
+            <p>&copy; 2026 Bolivia Wars: La Amenaza Masista.</p>
         </footer>
     </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r147/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/VOXLoader.js"></script>
     <script src="js/scripts.js"></script>
 </body>
 </html>

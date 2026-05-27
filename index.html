@@ -29,64 +29,118 @@
         <button id="skip-intro">Saltar Intro (Espacio)</button>
     </div>
 
+    <!-- Barra de Navegación -->
+    <nav id="main-nav" class="hidden">
+        <div class="nav-logo">BOLIVIA WARS</div>
+        <ul>
+            <li><a href="#hero">Inicio</a></li>
+            <li><a href="#equipo">Resistencia</a></li>
+            <li><a href="#narrativa">Crónica</a></li>
+            <li><a href="#proceso">Bitácora</a></li>
+        </ul>
+    </nav>
+
     <main id="main-site" class="hidden">
         <!-- Hero Section -->
-        <header id="hero">
-            <h1 class="glitch" data-text="BOLIVIA WARS">BOLIVIA WARS</h1>
-            <h2 class="sub-title">La Amenaza Masista</h2>
-            <p class="tagline">El Retorno del Bloqueo</p>
+        <header id="hero" class="vfx-reveal">
+            <div class="hero-content">
+                <h1 class="glitch" data-text="BOLIVIA WARS">BOLIVIA WARS</h1>
+                <h2 class="sub-title">La Amenaza Masista</h2>
+                <div class="saber-divider blue"></div>
+                <p class="tagline">El Retorno del Bloqueo</p>
+            </div>
+            <div class="scroll-indicator"><span></span></div>
         </header>
 
         <!-- Equipo Section -->
-        <section id="equipo">
-            <h2>Equipo de Resistencia</h2>
+        <section id="equipo" class="vfx-reveal">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2>Equipo de Resistencia</h2>
+            </div>
             <div class="team-grid">
                 <!-- EDITAR AQUÍ LOS NOMBRES DE LOS INTEGRANTES -->
                 <div class="member-card">
-                    <div class="card-holo"></div>
-                    <h3>Nombre Integrante 1</h3>
-                    <p>Rango: Comandante</p>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-holo"></div>
+                            <h3>Nombre Integrante 1</h3>
+                            <span class="rank">Comandante</span>
+                        </div>
+                        <div class="card-back">
+                            <p>Especialista en tácticas de bloqueo y salteñas.</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="member-card">
-                    <div class="card-holo"></div>
-                    <h3>Nombre Integrante 2</h3>
-                    <p>Rango: Maestro Jedi</p>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-holo"></div>
+                            <h3>Nombre Integrante 2</h3>
+                            <span class="rank">Maestro Jedi</span>
+                        </div>
+                        <div class="card-back">
+                            <p>Guardián del equilibrio en la Plaza Murillo.</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="member-card">
-                    <div class="card-holo"></div>
-                    <h3>Nombre Integrante 3</h3>
-                    <p>Rango: Piloto Rebelde</p>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-holo"></div>
+                            <h3>Nombre Integrante 3</h3>
+                            <span class="rank">Piloto Rebelde</span>
+                        </div>
+                        <div class="card-back">
+                            <p>Experto en maniobras evasivas por la Ceja.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <div class="saber-divider red"></div>
+
         <!-- Narrativa Section -->
-        <section id="narrativa">
-            <h2>Crónica de la Galaxia Paceña</h2>
-            <div class="story-container">
-                <article class="story-part masistas">
-                    <h3>El Trono de Papel Aluminio</h3>
-                    <p>Jabba el Masista presidía la batalla desde su trono dorado: una silla de plástico blanca de jardín a la que alguien había pegado papel aluminio. Cuatro droides lo cargaban en andas. "Oiga, jefe, yo creo que somos tres", dijo uno. "El B-27 se dobló en la subida", respondió otro. "Para efectos prácticos es lo mismo".</p>
+        <section id="narrativa" class="vfx-reveal">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2>Crónica de la Galaxia Paceña</h2>
+            </div>
+            <div class="story-timeline">
+                <article class="story-part masistas vfx-slide-left">
+                    <div class="story-content">
+                        <h3>El Trono de Papel Aluminio</h3>
+                        <p>Jabba el Masista presidía la batalla desde su trono dorado: una silla de plástico blanca de jardín a la que alguien había pegado papel aluminio. Cuatro droides lo cargaban en andas. "Oiga, jefe, yo creo que somos tres", dijo uno. "El B-27 se dobló en la subida", respondió otro. "Para efectos prácticos es lo mismo".</p>
+                    </div>
                 </article>
 
-                <article class="story-part clones">
-                    <h3>¿Atacamos o Merendamos?</h3>
-                    <p>Un escuadrón de clones se topó con una barricada de cajones de mandarina. "¿Atacamos?" preguntó CT-9981 "Salteñas". "¿Y si hay mandarinas adentro?" respondió CT-0042 "Llajwa". Hubo una pausa larga y filosófica. "Rodeamos".</p>
+                <article class="story-part clones vfx-slide-right">
+                    <div class="story-content">
+                        <h3>¿Atacamos o Merendamos?</h3>
+                        <p>Un escuadrón de clones se topó con una barricada de cajones de mandarina. "¿Atacamos?" preguntó CT-9981 "Salteñas". "¿Y si hay mandarinas adentro?" respondió CT-0042 "Llajwa". Hubo una pausa larga y filosófica. "Rodeamos".</p>
+                    </div>
                 </article>
 
-                <article class="story-part masistas">
-                    <h3>El Cañón de Plasma</h3>
-                    <p>Tres droides masistas intentaban operar un cañón de plasma. El manual estaba en Huttese y el droide que sabía leer se había ido a almorzar. "Aprieta el botón rojo rojo", dijo uno. El cañón disparó hacia su propio campamento. Nadie resultó herido porque todos estaban almorzando.</p>
+                <article class="story-part masistas vfx-slide-left">
+                    <div class="story-content">
+                        <h3>El Cañón de Plasma</h3>
+                        <p>Tres droides masistas intentaban operar un cañón de plasma. El manual estaba en Huttese y el droide que sabía leer se había ido a almorzar. "Aprieta el botón rojo rojo", dijo uno. El cañón disparó hacia su propio campamento. Nadie resultó herido porque todos estaban almorzando.</p>
+                    </div>
                 </article>
 
-                <article class="story-part tregua">
-                    <h3>La Tregua de la Salteña</h3>
-                    <p>A las 2 de la tarde se declaró una tregua para el almuerzo. Clones y droides compartieron la fila de una señora que vendía salteñas. Jabba pedía más chicharrón, mientras sus droides deliberaban si el sindicato galáctico cubría hernias de disco.</p>
+                <article class="story-part tregua vfx-slide-right">
+                    <div class="story-content">
+                        <h3>La Tregua de la Salteña</h3>
+                        <p>A las 2 de la tarde se declaró una tregua para el almuerzo. Clones y droides compartieron la fila de una señora que vendía salteñas. Jabba pedía más chicharrón, mientras sus droides deliberaban si el sindicato galáctico cubría hernias de disco.</p>
+                    </div>
                 </article>
 
-                <article class="story-part final">
-                    <h3>La Guerra Continúa</h3>
-                    <p>La guerra continuaría. Como siempre. Como todo en Bolivia: con mucho drama, bastante humor involuntario, y nadie terminando de ganar del todo. Una nueva esperanza de que alguien cierre la tranca.</p>
+                <article class="story-part final vfx-fade-in">
+                    <div class="story-content">
+                        <h3>La Guerra Continúa</h3>
+                        <p>La guerra continuaría. Como siempre. Como todo en Bolivia: con mucho drama, bastante humor involuntario, y nadie terminando de ganar del todo. Una nueva esperanza de que alguien cierre la tranca.</p>
+                    </div>
                 </article>
             </div>
         </section>
@@ -94,20 +148,38 @@
         <div class="saber-divider blue"></div>
 
         <!-- Proceso de Diseño Section -->
-        <section id="proceso">
-            <h2>Registro Visual del Proceso</h2>
-            <div class="proceso-grid">
-                <div class="proceso-item">
-                    <div class="image-placeholder">Concepto</div>
-                    <p>Conceptualización de la ucrónica boliviana.</p>
+        <section id="proceso" class="vfx-reveal">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2>Bitácora de Diseño</h2>
+            </div>
+            <div class="proceso-gallery">
+                <div class="proceso-item vfx-zoom-in">
+                    <div class="proceso-card">
+                        <div class="image-placeholder">Concepto</div>
+                        <div class="proceso-info">
+                            <h4>Conceptualización</h4>
+                            <p>Definición del universo ucrónico y la estética paceño-galáctica.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="proceso-item">
-                    <div class="image-placeholder">Modelado</div>
-                    <p>Diseño de personajes y entornos híbridos.</p>
+                <div class="proceso-item vfx-zoom-in">
+                    <div class="proceso-card">
+                        <div class="image-placeholder">Modelado</div>
+                        <div class="proceso-info">
+                            <h4>Personajes</h4>
+                            <p>Diseño de los droides masistas y clones de la república.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="proceso-item">
-                    <div class="image-placeholder">Prototipo</div>
-                    <p>Maquetación del micrositio interactivo.</p>
+                <div class="proceso-item vfx-zoom-in">
+                    <div class="proceso-card">
+                        <div class="image-placeholder">Web UI</div>
+                        <div class="proceso-info">
+                            <h4>Interfaz</h4>
+                            <p>Maquetación profesional con animaciones avanzadas.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

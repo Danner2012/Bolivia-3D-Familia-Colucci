@@ -38,56 +38,56 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(showMainSite, 1000); 
 });
 
-// --- Motor 3D Simplificado ---
+// --- Motor 3D Simplificado con Interacción ---
 function init3DVisor(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(20, 20, 20);
-    camera.lookAt(0, 0, 0);
+    const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(30, 30, 30);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     container.innerHTML = ''; 
     container.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 1));
-    const light = new THREE.DirectionalLight(0x00ff88, 1);
-    light.position.set(10, 10, 10);
-    scene.add(light);
+    // Controles de Órbita (Zoom, Rotación, Paneo)
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 2.0;
+
+    // Iluminación Mejorada
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const mainLight = new THREE.DirectionalLight(0x00ff88, 1.2);
+    mainLight.position.set(20, 40, 20);
+    scene.add(mainLight);
+
+    const backLight = new THREE.PointLight(0x0088ff, 0.8);
+    backLight.position.set(-20, -10, -20);
+    scene.add(backLight);
 
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
-    // Usamos FileLoader para tener control sobre los bytes
     const fileLoader = new THREE.FileLoader();
     fileLoader.setResponseType('arraybuffer');
     
-    console.log('Iniciando carga de:', 'assets/models/personaje_base.vox');
-
     fileLoader.load('assets/models/personaje_base.vox', function (buffer) {
         try {
             const view = new DataView(buffer);
             const version = view.getUint32(4, true);
-            
-            if (version === 200) {
-                console.log('Detectada versión 200, parcheando a 150 para compatibilidad...');
-                view.setUint32(4, 150, true);
-            }
+            if (version === 200) view.setUint32(4, 150, true);
 
             const loader = new THREE.VOXLoader();
             const chunks = loader.parse(buffer);
             
-            if (!chunks || chunks.length === 0) {
-                throw new Error('No se encontraron bloques de datos en el archivo');
-            }
-
-            console.log('Procesando chunks:', chunks.length);
             for (let i = 0; i < chunks.length; i++) {
                 const mesh = new THREE.VOXMesh(chunks[i]);
-                mesh.scale.setScalar(0.15); 
+                mesh.scale.setScalar(0.35); // Escala aumentada
                 modelGroup.add(mesh);
             }
             
@@ -95,33 +95,33 @@ function init3DVisor(containerId) {
             const center = box.getCenter(new THREE.Vector3());
             modelGroup.position.sub(center);
             
-            // Centrar cámara basado en el tamaño
+            // Ajustar cámara para que el modelo se vea grande
             const size = box.getSize(new THREE.Vector3());
             const maxDim = Math.max(size.x, size.y, size.z);
-            camera.position.set(maxDim * 1.5, maxDim * 1.5, maxDim * 1.5);
-            camera.lookAt(0, 0, 0);
-
-            console.log('Modelo cargado exitosamente');
+            camera.position.set(maxDim * 1.2, maxDim * 1.0, maxDim * 1.2);
+            controls.target.set(0, 0, 0);
+            controls.update();
 
         } catch (e) {
-            console.error('Error procesando el modelo:', e);
-            container.innerHTML = `<div style="color:red; padding:10px; font-size:10px;">ERROR_PROCESO: ${e.message}</div>`;
+            console.error('Error:', e);
+            container.innerHTML = `<div style="color:red; font-size:10px;">ERROR: ${e.message}</div>`;
         }
-    }, 
-    (xhr) => {
-        if (xhr.total > 0) console.log((xhr.loaded / xhr.total * 100) + '% cargado');
-    }, 
-    (error) => {
-        console.error('Error de red:', error);
-        container.innerHTML = `<div style="color:red; padding:10px; font-size:10px;">ERROR_RED: Verifica la ruta del archivo</div>`;
+    }, undefined, (error) => {
+        container.innerHTML = `<div style="color:red; font-size:10px;">ERROR_CARGA</div>`;
     });
 
     function animate() {
         requestAnimationFrame(animate);
-        modelGroup.rotation.y += 0.01;
+        controls.update(); // Necesario para el damping y auto-rotate
         renderer.render(scene, camera);
     }
     animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    });
 }
 
 // Funciones del túnel eliminadas para evitar conflictos hasta que funcione el visor principal

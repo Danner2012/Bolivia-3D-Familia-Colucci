@@ -1,0 +1,40 @@
+:root {
+    /* --- MASISTAS / SEPARATISTAS --- */
+    --color-masista-rojo: #D4411F;
+    --color-masista-naranja: #F5A623;
+    --color-masista-marron: #8B6A00;
+    --color-masista-arena: #C4A35A;
+    --color-masista-oscuro: #4A2F0A;
+    --color-masista-verde: #1A7A3C;
+    --color-masista-rojo-oscuro: #8B1A1A;
+
+    /* --- GOBIERNO / CLONES --- */
+    --color-gobierno-blanco: #E8E8E8;
+    --color-gobierno-azul: #7BC8F0;
+    --color-gobierno-azul-profundo: #2A5FA3;
+    --color-gobierno-gris-visera: #A0A0A0;
+    --color-gobierno-gris-metal: #3D3D3D;
+    --color-gobierno-dorado: #B8860B;
+    --color-gobierno-azul-noche: #0A1A2E;
+
+    /* --- ENTORNO / GEONOSIS / LA PAZ --- */
+    --color-entorno-tierra: #C2652A;
+    --color-entorno-roca: #8B3A0F;
+    --color-entorno-arena: #E8C89A;
+    --color-entorno-sombra: #1A0A00;
+    --color-entorno-cielo: #4A7A9B;
+    --color-entorno-adobe: #6B4E3D;
+
+    /* --- EFECTOS & UI WEB --- */
+    --color-ui-negro: #0D0D0D;
+    --color-ui-sable-azul: #00BFFF;
+    --color-ui-sable-rojo: #FF3D00;
+    --color-ui-texto-crawl: #F0E68C;
+    --color-ui-blanco-hud: #FFFFFF;
+    --color-ui-verde-holo: #1C2E1C;
+    --color-ui-holograma: #00FF88;
+
+    /* --- FUENTES --- */
+    --font-primary: 'Roboto Condensed', sans-serif;
+    --font-header: 'Orbitron', sans-serif;
+}

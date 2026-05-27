@@ -282,23 +282,54 @@ h2 {
     border-radius: 10px;
 }
 
-/* --- Visor Directo .VOX --- */
-.vox-viewer-container {
-    display: flex;
+/* --- Visor Dual .VOX y Render --- */
+.vox-dual-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
     background: rgba(10, 26, 46, 0.4);
-    border: 1px solid var(--color-ui-holograma);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
-    margin-bottom: 3rem;
-    overflow: hidden;
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+    padding: 1.5rem;
 }
 
-.vox-canvas-wrapper {
-    flex: 1;
+.vox-viewer-column, .render-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vox-canvas-wrapper, .render-frame {
+    width: 100%;
     height: 400px;
-    background: radial-gradient(circle, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
     position: relative;
-    cursor: grab;
+}
+
+.render-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+}
+
+.viewer-label {
+    margin-top: 1rem;
+    font-family: var(--font-header);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+@media (max-width: 992px) {
+    .vox-dual-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 .vox-canvas-wrapper:active { cursor: grabbing; }

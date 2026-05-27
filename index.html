@@ -158,47 +158,26 @@
                 <h2>Bitácora de Personajes</h2>
             </div>
 
-            <!-- Visor Directo del Modelo .vox -->
-            <div class="vox-viewer-container">
-                <div id="direct-vox-viewer" class="vox-canvas-wrapper">
-                    <p class="loading-text">SINCRONIZANDO HOLOGRAMA...</p>
-                </div>
-                <div class="vox-info">
-                    <h3>Prototipo: Personaje Base</h3>
-                    <p>Archivos recuperados de los servidores de la resistencia. Formato .VOX (MagicaVoxel).</p>
-                    <div class="vox-stats">
-                        <div class="stat"><span>INTEGRIDAD:</span> <div class="bar"><div class="fill" style="width: 85%;"></div></div></div>
-                        <div class="stat"><span>ESTADO:</span> <span class="status-online">ACTIVO</span></div>
+            <!-- Visor Dual: 3D y Render -->
+            <div class="vox-dual-layout">
+                <div class="vox-viewer-column">
+                    <div id="direct-vox-viewer" class="vox-canvas-wrapper">
+                        <p class="loading-text">CARGANDO MODELO INTERACTIVO...</p>
                     </div>
+                    <p class="viewer-label">VISOR 3D INTERACTIVO</p>
                 </div>
-            </div>
-            
-            <div id="bitacora-launcher">
-                <div class="launcher-content">
-                    <div class="warning-box">ACCESO RESTRINGIDO</div>
-                    <h3>SISTEMA DE INTELIGENCIA REBELDE</h3>
-                    <p>Haz clic para inicializar la conexión neuronal con los archivos de la guerra.</p>
-                    <button class="launch-btn" onclick="startInmersiveExp()">INICIALIZAR SECUENCIA</button>
+                
+                <div class="render-column">
+                    <div class="render-frame">
+                        <img src="assets/render/personaje_base.png" alt="Render Personaje Base">
+                    </div>
+                    <p class="viewer-label">VISTA RENDERIZADA (HQ)</p>
                 </div>
             </div>
 
-            <div id="inmersive-tunnel">
-                <div class="tunnel-controls">
-                    <button class="close-exp" onclick="closeInmersiveExp()">✕ SALIR DE LA SIMULACIÓN</button>
-                    <div id="tunnel-progress">PROGRESO: 0%</div>
-                </div>
-
-                <div id="viewport-3d">
-                    <div id="world-3d">
-                        <div class="scene-block" id="scene-1">
-                            <div class="scene-content">
-                                <h3>CAPÍTULO I: EL TRONO</h3>
-                                <p>Jabba el Masista preside desde su trono de papel aluminio.</p>
-                                <div class="holo-preview" id="scene-1-holo">CARGANDO...</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="vox-info">
+                <h3>Prototipo: Personaje Base</h3>
+                <p>Análisis comparativo entre el modelo de vóxeles en tiempo real y su procesamiento final de alta calidad.</p>
             </div>
         </section>
 

@@ -323,7 +323,7 @@ h2 {
 }
 
 .vox-info h3 {
-    color: var(--color-ui-holograma);
+    color: #ffffff;
     margin-bottom: 1rem;
     font-size: 1.8rem;
 }
@@ -331,7 +331,7 @@ h2 {
 .vox-info p {
     font-size: 1rem;
     line-height: 1.6;
-    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.7);
     margin-bottom: 2rem;
 }
 
@@ -348,6 +348,7 @@ h2 {
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 0.8rem;
     letter-spacing: 1px;
+    color: #ffffff;
 }
 
 .stat .bar {
@@ -359,14 +360,14 @@ h2 {
 
 .stat .fill {
     height: 100%;
-    background: var(--color-ui-holograma);
-    box-shadow: 0 0 10px var(--color-ui-holograma);
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .status-online {
-    color: var(--color-ui-holograma);
+    color: #ffffff;
     font-weight: bold;
-    text-shadow: 0 0 10px var(--color-ui-holograma);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {

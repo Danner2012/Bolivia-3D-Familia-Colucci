@@ -33,9 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (skipButton) skipButton.addEventListener('click', showMainSite);
-    
-    // Auto-saltar para desarrollo rápido
-    setTimeout(showMainSite, 1000); 
 });
 
 // --- Motor 3D Simplificado con Interacción ---
@@ -60,15 +57,15 @@ function init3DVisor(containerId) {
     controls.autoRotate = true;
     controls.autoRotateSpeed = 2.0;
 
-    // Iluminación Mejorada
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const mainLight = new THREE.DirectionalLight(0x00ff88, 1.2);
+    // Iluminación Neutra (Sin tintes verdes)
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1.0);
     mainLight.position.set(20, 40, 20);
     scene.add(mainLight);
 
-    const backLight = new THREE.PointLight(0x0088ff, 0.8);
-    backLight.position.set(-20, -10, -20);
-    scene.add(backLight);
+    const fillLight = new THREE.PointLight(0xffffff, 0.5);
+    fillLight.position.set(-20, 10, -20);
+    scene.add(fillLight);
 
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);

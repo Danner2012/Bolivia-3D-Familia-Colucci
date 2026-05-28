@@ -198,8 +198,11 @@ header#hero {
     font-family: var(--font-header);
     font-size: 4rem;
     color: transparent;
-    -webkit-text-stroke: 1px var(--color-ui-texto-crawl);
-    opacity: 0.5;
+    -webkit-text-stroke: 1.5px var(--color-ui-texto-crawl);
+    opacity: 1;
+    /* Intense Yellow Neon glow */
+    filter: drop-shadow(0 0 10px var(--color-ui-texto-crawl))
+            drop-shadow(0 0 20px rgba(240, 230, 140, 0.4));
 }
 
 h2 {
@@ -207,6 +210,18 @@ h2 {
     text-align: left;
     margin-bottom: 0;
     font-size: 2.5rem;
+    color: #fff;
+    /* Bright Yellow Neon glow for titles */
+    text-shadow: 
+        0 0 10px var(--color-ui-texto-crawl),
+        0 0 20px rgba(240, 230, 140, 0.6),
+        0 0 30px rgba(240, 230, 140, 0.4);
+    letter-spacing: 3px;
+}
+
+/* Unified style for all section headers */
+.section-number {
+    -webkit-text-stroke: 1.5px var(--color-ui-texto-crawl);
 }
 
 /* Team Grid */

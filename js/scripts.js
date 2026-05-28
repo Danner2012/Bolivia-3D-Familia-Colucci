@@ -84,6 +84,13 @@ const initScrollAnimations = () => {
 // --- Configuración de Datos ---
 const SECTIONS_DATA = [
     {
+        id: 'ejemplo-0',
+        containerId: 'ejemplo-0-container',
+        sectionTitle: 'Render Principal',
+        sectionImage: 'assets/models/Elataquemasista.png', 
+        subjects: []
+    },
+    {
         id: 'jefaso',
         containerId: 'jefaso-container',
         sectionTitle: 'Comandantes Jefaso',
@@ -129,7 +136,7 @@ const SECTIONS_DATA = [
 ];
 
 const PAGINATION_STATE = {};
-const ACTIVE_VISORS = new Map(); // Mapa para trackear visores activos
+const ACTIVE_VISORS = new Map();
 
 function initDossiers() {
     SECTIONS_DATA.forEach(section => {
@@ -245,7 +252,7 @@ function renderSubjectCard(container, subject, globalIdx) {
 function initLazyLoading() {
     const options = {
         root: null,
-        rootMargin: '200px', // Cargar un poco antes de que entre en vista
+        rootMargin: '200px', 
         threshold: 0.01
     };
 
@@ -255,13 +262,13 @@ function initLazyLoading() {
             const modelPath = container.getAttribute('data-model');
             
             if (entry.isIntersecting) {
-                // Iniciar visor si no está activo
+                
                 if (!ACTIVE_VISORS.has(container.id)) {
                     const visor = init3DVisor(container.id, modelPath);
                     if (visor) ACTIVE_VISORS.set(container.id, visor);
                 }
             } else {
-                // Detener y liberar recursos si sale de vista
+                
                 if (ACTIVE_VISORS.has(container.id)) {
                     ACTIVE_VISORS.get(container.id).dispose();
                     ACTIVE_VISORS.delete(container.id);
@@ -312,7 +319,7 @@ function init3DVisor(containerId, modelPath) {
     const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limitar para performance
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.innerHTML = ''; 
     container.appendChild(renderer.domElement);
 

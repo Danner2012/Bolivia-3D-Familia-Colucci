@@ -390,6 +390,10 @@ h2 {
     gap: 0;
 }
 
+.story-layout.full-width {
+    grid-template-columns: 1fr;
+}
+
 .story-image {
     position: relative;
     overflow: hidden;

@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainSite = document.getElementById('main-site');
     const mainNav = document.getElementById('main-nav');
     
-    // Elementos de Audio
     const bgMusic = document.getElementById('bg-music');
     const mainMusic = document.getElementById('main-music');
     const audioToggle = document.getElementById('audio-toggle');
@@ -14,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainSite) mainSite.classList.remove('hidden');
         if (mainNav) mainNav.classList.remove('hidden');
         
-        // Transición de música: detener intro, iniciar principal
         if (bgMusic) {
             bgMusic.pause();
             bgMusic.currentTime = 0;
@@ -26,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initScrollAnimations();
         initDossiers();
+        initLazyLoading(); // Iniciar observador de visores
         window.scrollTo(0, 0);
     };
 
-    // Lógica de Audio
     if (bgMusic && audioToggle) {
         bgMusic.volume = 1.0; 
         if (mainMusic) mainMusic.volume = 1.0;
@@ -37,50 +35,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const forcePlay = () => {
             if (introContainer && introContainer.style.display !== 'none') {
                 bgMusic.play().then(() => {
-                    console.log("Audio de intro forzado con éxito.");
-                    // Una vez que suena, quitamos los listeners de "intento"
                     document.removeEventListener('mousedown', forcePlay);
                     document.removeEventListener('keydown', forcePlay);
                     document.removeEventListener('touchstart', forcePlay);
-                }).catch(err => {
-                    console.log("Esperando interacción para sonar...");
-                });
+                }).catch(err => {});
             }
         };
 
-        // Intentar sonar al cargar
         forcePlay();
-
-        // Listeners globales agresivos (mousedown y touchstart son más rápidos que click)
         document.addEventListener('mousedown', forcePlay);
         document.addEventListener('keydown', forcePlay);
         document.addEventListener('touchstart', forcePlay);
 
-        // Control de silencio sincronizado
         audioToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             const isMuted = !bgMusic.muted;
-            
             if (bgMusic) bgMusic.muted = isMuted;
             if (mainMusic) mainMusic.muted = isMuted;
-            
             audioToggle.classList.toggle('muted');
             audioToggle.innerHTML = isMuted ? '🔇' : '🔊';
-            
-            // Si el usuario le da al botón y estaba pausado por el navegador, forzamos play
             if (!isMuted) {
-                if (introContainer && introContainer.style.display !== 'none') {
-                    bgMusic.play();
-                } else if (mainMusic) {
-                    mainMusic.play();
-                }
+                if (introContainer && introContainer.style.display !== 'none') bgMusic.play();
+                else if (mainMusic) mainMusic.play();
             }
         });
     }
 
     if (skipButton) skipButton.addEventListener('click', showMainSite);
     
-    // También permitir saltar intro con la tecla espacio
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space' && introContainer && introContainer.style.display !== 'none') {
             e.preventDefault();
@@ -99,47 +81,63 @@ const initScrollAnimations = () => {
     document.querySelectorAll('.vfx-reveal').forEach(el => observer.observe(el));
 };
 
-// --- Gestión Dinámica de Dossiers ---
 // --- Configuración de Datos ---
 const SECTIONS_DATA = [
     {
+        id: 'ejemplo-0',
+        containerId: 'ejemplo-0-container',
+        sectionTitle: 'Render Principal',
+        sectionImage: 'assets/models/Elataquemasista.png', 
+        subjects: []
+    },
+    {
         id: 'jefaso',
         containerId: 'jefaso-container',
-        sectionTitle: 'Comandantes Jefaso',
-        sectionImage: 'assets/render/personaje_base.png',
+        sectionTitle: 'JEVVO',
+        sectionImage: 'assets/models/Jefaso/Jabba.png',
+        sectionModel: 'assets/models/Jefaso/Jabba.vox',
         subjects: [] 
     },
     {
         id: 'defensas',
         containerId: 'defensas-container',
         sectionTitle: 'Unidades de Defensa',
-        sectionImage: 'assets/render/personaje_base.png',
+        sectionImage: 'assets/models/Defensas/Defensas.png',
         subjects: [
-            { name: 'Aria', id: 'DF-001', model: 'assets/models/Defensas/Aria.vox' },
-            { name: 'Peter', id: 'DF-002', model: 'assets/models/Defensas/Peter.vox' },
-            { name: 'Sunna', id: 'DF-003', model: 'assets/models/Defensas/Sunna.vox' },
-            { name: 'Nangong', id: 'DF-004', model: 'assets/models/Defensas/Nangong.vox' },
-            { name: 'Default Defensa', id: 'DF-005', model: 'assets/models/Defensas/Default.vox' },
-            { name: 'Mortero', id: 'DF-006', model: 'assets/models/Defensas/mortero.vox' }
+            { name: 'Default', id: 'DF-001', model: 'assets/models/Defensas/Default.vox' },
+            { name: 'Rifle', id: 'DF-002', model: 'assets/models/Defensas/rifle.vox' },
+            { name: 'Rifleagachado', id: 'DF-003', model: 'assets/models/Defensas/rifleagachado.vox' },
+            { name: 'Espadita magica', id: 'DF-004', model: 'assets/models/Defensas/espadamistica.vox' },
+            { name: 'Sord', id: 'DF-005', model: 'assets/models/Defensas/sord.vox' },
+            { name: 'Mortero', id: 'DF-006', model: 'assets/models/Defensas/mortero.vox' },
+            { name: 'Mortero Pibe', id: 'DF-007', model: 'assets/models/Defensas/morteropibe.vox' },
+            { name: 'Escudito Escudoso', id: 'DF-008', model: 'assets/models/Defensas/escuditoescudoso.vox' },
+            { name: 'Aria', id: 'DF-009', model: 'assets/models/Defensas/Aria.vox' },
+            { name: 'Sunna', id: 'DF-010', model: 'assets/models/Defensas/Sunna.vox' },
+            { name: 'Nangong', id: 'DF-011', model: 'assets/models/Defensas/Nangong.vox' },
+            { name: 'Peter', id: 'DF-012', model: 'assets/models/Defensas/Petter.vox' }
         ]
     },
     {
         id: 'droides',
         containerId: 'droides-basic-container',
         sectionTitle: 'Batallón Droide',
-        sectionImage: 'assets/render/personaje_base.png',
+        sectionImage: 'assets/models/Droides_Basic/Masistas.png',
         subjects: [
-            { name: 'Droide B-0', id: 'DB-001', model: 'assets/models/Droides_Basic/droide0.vox' },
-            { name: 'Droide B-1', id: 'DB-002', model: 'assets/models/Droides_Basic/droide1.vox' },
-            { name: 'Droide B-2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide2.vox' },
-            { name: 'Droide B-3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide3.vox' },
+            { name: 'Droide B-0', id: 'DB-001', model: 'assets/models/Droides_Basic/droide1.vox' },
+            { name: 'Droide B-1', id: 'DB-002', model: 'assets/models/Droides_Basic/droide2.vox' },
+            { name: 'Droide B-2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide3.vox' },
+            { name: 'Droide B-3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide4.vox' },
+            { name: 'Droide B-4', id: 'DB-005', model: 'assets/models/Droides_Basic/droide5.vox' },
             { name: 'Mega Droide M-0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox' },
-            { name: 'Mega Droide M-1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' }
+            { name: 'Mega Droide M-1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' },
+            { name: 'Mega Droide M-2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox' }
         ]
     }
 ];
 
 const PAGINATION_STATE = {};
+const ACTIVE_VISORS = new Map();
 
 function initDossiers() {
     SECTIONS_DATA.forEach(section => {
@@ -153,12 +151,10 @@ function renderSectionPage(sectionId) {
     const container = document.getElementById(section.containerId);
     if (!container) return;
 
-    // Inicializar Banner PERMANENTE
     if (!container.dataset.initialized) {
         container.innerHTML = '';
         renderBannerCard(container, section);
         
-        // Solo crear el grid si hay sujetos que mostrar
         if (section.subjects.length > 0) {
             const grid = document.createElement('div');
             grid.id = `${sectionId}-grid`;
@@ -170,13 +166,22 @@ function renderSectionPage(sectionId) {
     }
 
     const grid = document.getElementById(`${sectionId}-grid`);
-    if (!grid) return; // Si no hay grid (como en Jefaso), no hacer nada más
+    if (!grid) return;
 
-    // Solo pestañean los sujetos
     if (section.subjects.length > 0) {
-        grid.classList.add('blinking');
+        grid.classList.add('imploding');
+        
         setTimeout(() => {
+            grid.querySelectorAll('.vox-canvas-wrapper').forEach(el => {
+                if (ACTIVE_VISORS.has(el.id)) {
+                    ACTIVE_VISORS.get(el.id).dispose();
+                    ACTIVE_VISORS.delete(el.id);
+                }
+            });
+
             grid.innerHTML = '';
+            grid.classList.remove('imploding');
+            
             const currentPage = PAGINATION_STATE[sectionId];
             const itemsPerPage = 2;
             const start = currentPage * itemsPerPage;
@@ -187,8 +192,17 @@ function renderSectionPage(sectionId) {
             });
 
             renderPaginationControls(sectionId);
-            grid.classList.remove('blinking');
-        }, 300);
+            grid.classList.add('exploding');
+            
+            if (window.lazyObserver) {
+                grid.querySelectorAll('.vox-canvas-wrapper').forEach(el => window.lazyObserver.observe(el));
+            }
+
+            setTimeout(() => {
+                grid.classList.remove('exploding');
+            }, 600);
+
+        }, 500);
     }
 }
 
@@ -196,33 +210,83 @@ function renderBannerCard(container, section) {
     const card = document.createElement('div');
     card.className = 'character-dossier banner-card';
     
-    if (section.id === 'jefaso') {
-        const viewerId = `vox-viewer-jefazo`;
-        card.innerHTML = `
-            <div class="dossier-header">
-                <div class="dossier-title"><h3>Comandante Supremo: <span>${section.sectionTitle}</span></h3></div>
+    const has3D = !!section.sectionModel;
+    const isJefaso = section.id === 'jefaso';
+    
+    card.innerHTML = `
+        <div class="dossier-header">
+            <div class="dossier-title">
+                <h3>${isJefaso ? 'Masista supremo' : 'Archivo Visual'}: 
+                <span class="${isJefaso ? 'glitch' : ''}" data-text="${section.sectionTitle}">${section.sectionTitle}</span></h3>
             </div>
-            <div class="dossier-main">
-                <div class="view-container"><div id="${viewerId}" class="vox-canvas-wrapper"></div><div class="view-tag">VISOR 3D</div></div>
-                <div class="view-container"><div class="render-frame"><img src="${section.sectionImage}"></div><div class="view-tag">RENDER HQ</div></div>
+            ${has3D ? `<button class="view-3d-btn" onclick="toggleBanner3D('${section.id}', '${section.sectionImage}')">PROYECTAR 3D</button>` : ''}
+        </div>
+        <div class="dossier-main-single" id="${section.id}-main-content" style="position: relative; height: 550px; background: #000; overflow: hidden;">
+            <div class="render-frame-large" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; transition: opacity 0.5s ease; background: #000;">
+                <img src="${section.sectionImage}" class="section-hero-img">
             </div>
-            <div class="dossier-footer"><div class="footer-label">ALTO MANDO</div></div>
-        `;
-        container.appendChild(card);
-        setTimeout(() => init3DVisor(viewerId, 'assets/models/personaje_base.vox'), 100);
-    } else {
-        card.innerHTML = `
-            <div class="dossier-header">
-                <div class="dossier-title"><h3>Archivo Visual: <span>${section.sectionTitle}</span></h3></div>
-            </div>
-            <div class="dossier-main-single">
-                <div class="render-frame-large"><img src="${section.sectionImage}" class="section-hero-img"></div>
-            </div>
-            <div class="dossier-footer"><div class="footer-label">DOCUMENTACIÓN GRÁFICA</div></div>
-        `;
-        container.appendChild(card);
-    }
+            ${has3D ? `
+            <div class="vox-canvas-wrapper" id="vox-viewer-special-${section.id}" data-model="${section.sectionModel}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 1; transition: opacity 0.5s ease;">
+                <p class="loading-text">INICIALIZANDO PROYECCIÓN...</p>
+            </div>` : ''}
+        </div>
+        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ALTO MANDO' : 'DOCUMENTACIÓN GRÁFICA'}</div></div>
+    `;
+    container.appendChild(card);
 }
+
+window.toggleBanner3D = (sectionId, originalImage) => {
+    const mainContent = document.getElementById(`${sectionId}-main-content`);
+    if (!mainContent) return;
+
+    const imgContainer = mainContent.querySelector('.render-frame-large');
+    const voxContainer = mainContent.querySelector('.vox-canvas-wrapper');
+    const btn = mainContent.closest('.character-dossier').querySelector('.view-3d-btn');
+    
+    const is3DActive = voxContainer.style.opacity === '1';
+
+    if (is3DActive) {
+        // Volver a imagen
+        voxContainer.classList.add('projecting-glitch');
+        
+        setTimeout(() => {
+            voxContainer.style.opacity = '0';
+            voxContainer.style.zIndex = '1';
+            imgContainer.style.opacity = '1';
+            imgContainer.style.zIndex = '2';
+            voxContainer.classList.remove('projecting-glitch');
+            btn.innerText = 'PROYECTAR 3D';
+        }, 400);
+    } else {
+        // Proyectar 3D
+        imgContainer.classList.add('projecting-glitch');
+        
+        // Efecto de interferencia (overlay)
+        const overlay = document.createElement('div');
+        overlay.className = 'glitch-overlay';
+        mainContent.appendChild(overlay);
+
+        setTimeout(() => {
+            imgContainer.style.opacity = '0';
+            imgContainer.style.zIndex = '1';
+            voxContainer.style.opacity = '1';
+            voxContainer.style.zIndex = '2';
+            voxContainer.classList.add('projection-active');
+            imgContainer.classList.remove('projecting-glitch');
+            btn.innerText = 'VOLVER AL RENDER';
+            
+            // Forzar carga 3D si no está cargado
+            if (window.lazyObserver) {
+                window.lazyObserver.observe(voxContainer);
+            }
+            
+            setTimeout(() => {
+                overlay.remove();
+                voxContainer.classList.remove('projection-active');
+            }, 800);
+        }, 400);
+    }
+};
 
 function renderSubjectCard(container, subject, globalIdx) {
     const card = document.createElement('div');
@@ -233,12 +297,42 @@ function renderSubjectCard(container, subject, globalIdx) {
             <div class="dossier-title"><h3>Sujeto: <span>${subject.name}</span></h3></div>
         </div>
         <div class="dossier-main-single">
-            <div class="view-container"><div id="${viewerId}" class="vox-canvas-wrapper"></div><div class="view-tag">INTERACTIVO 3D</div></div>
+            <div class="view-container"><div id="${viewerId}" class="vox-canvas-wrapper" data-model="${subject.model}">
+                <p class="loading-text">CARGANDO MODELO...</p>
+            </div><div class="view-tag">INTERACTIVO 3D</div></div>
         </div>
         <div class="dossier-footer"><div class="footer-label">REPORTE TÁCTICO</div></div>
     `;
     container.appendChild(card);
-    setTimeout(() => init3DVisor(viewerId, subject.model), 100);
+}
+
+function initLazyLoading() {
+    const options = {
+        root: null,
+        rootMargin: '200px', 
+        threshold: 0.01
+    };
+
+    window.lazyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const container = entry.target;
+            const modelPath = container.getAttribute('data-model');
+            if (entry.isIntersecting) {
+                if (!ACTIVE_VISORS.has(container.id)) {
+                    const visor = init3DVisor(container.id, modelPath);
+                    if (visor) ACTIVE_VISORS.set(container.id, visor);
+                }
+            } else {
+                if (ACTIVE_VISORS.has(container.id)) {
+                    ACTIVE_VISORS.get(container.id).dispose();
+                    ACTIVE_VISORS.delete(container.id);
+                    container.innerHTML = '<p class="loading-text">MODO AHORRO DE ENERGÍA (FUERA DE VISTA)</p>';
+                }
+            }
+        });
+    }, options);
+
+    document.querySelectorAll('.vox-canvas-wrapper[data-model]').forEach(el => window.lazyObserver.observe(el));
 }
 
 function renderPaginationControls(sectionId) {
@@ -268,20 +362,23 @@ window.changePage = (sectionId, direction) => {
     renderSectionPage(sectionId);
 };
 
-// --- Motor 3D ---
 function init3DVisor(containerId, modelPath) {
     const container = document.getElementById(containerId);
-    if (!container) return;
+    if (!container) return null;
 
+    let animationId;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.innerHTML = ''; 
     container.appendChild(renderer.domElement);
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.autoRotate = true;
+    controls.enableDamping = true;
+
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
     const mainLight = new THREE.DirectionalLight(0xffffff, 1.0);
     mainLight.position.set(20, 40, 20);
@@ -290,11 +387,14 @@ function init3DVisor(containerId, modelPath) {
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
-    new THREE.FileLoader().setResponseType('arraybuffer').load(modelPath, function (buffer) {
+    const loader = new THREE.FileLoader();
+    loader.setResponseType('arraybuffer');
+    loader.load(modelPath, function (buffer) {
         try {
             const view = new DataView(buffer);
             if (view.getUint32(4, true) === 200) view.setUint32(4, 150, true);
-            const chunks = new THREE.VOXLoader().parse(buffer);
+            const voxLoader = new THREE.VOXLoader();
+            const chunks = voxLoader.parse(buffer);
             for (let i = 0; i < chunks.length; i++) {
                 const mesh = new THREE.VOXMesh(chunks[i]);
                 mesh.scale.setScalar(0.35);
@@ -304,15 +404,31 @@ function init3DVisor(containerId, modelPath) {
             modelGroup.position.sub(box.getCenter(new THREE.Vector3()));
             const size = box.getSize(new THREE.Vector3());
             const maxDim = Math.max(size.x, size.y, size.z);
-            camera.position.set(maxDim * 1.5, maxDim * 1.2, maxDim * 1.5);
+            camera.position.set(maxDim * 0.01, maxDim * 0.5, maxDim * 1.4);
             controls.update();
         } catch (e) { container.innerHTML = `<div style="color:red; font-size:10px;">ERROR: ${e.message}</div>`; }
     });
 
     function animate() {
-        requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
         controls.update();
         renderer.render(scene, camera);
     }
     animate();
+
+    return {
+        dispose: () => {
+            cancelAnimationFrame(animationId);
+            renderer.dispose();
+            renderer.forceContextLoss();
+            scene.traverse(object => {
+                if (object.geometry) object.geometry.dispose();
+                if (object.material) {
+                    if (Array.isArray(object.material)) object.material.forEach(m => m.dispose());
+                    else object.material.dispose();
+                }
+            });
+            if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
+        }
+    };
 }

@@ -26,7 +26,34 @@ document.addEventListener('DOMContentLoaded', () => {
         initScrollAnimations();
         initDossiers();
         initLazyLoading(); // Iniciar observador de visores
+        initChronicleCarousel(); // Iniciar carrusel de narrativa
         window.scrollTo(0, 0);
+    };
+
+    const initChronicleCarousel = () => {
+        const slides = document.querySelectorAll('.story-part');
+        const prevBtn = document.getElementById('chronicle-prev');
+        const nextBtn = document.getElementById('chronicle-next');
+        let currentSlide = 0;
+
+        if (!slides.length || !prevBtn || !nextBtn) return;
+
+        const updateSlides = (index) => {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) slide.classList.add('active');
+            });
+        };
+
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlides(currentSlide);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlides(currentSlide);
+        });
     };
 
     const showIntro = () => {

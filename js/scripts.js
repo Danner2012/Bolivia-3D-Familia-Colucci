@@ -93,8 +93,9 @@ const SECTIONS_DATA = [
     {
         id: 'jefaso',
         containerId: 'jefaso-container',
-        sectionTitle: 'Comandantes Jefaso',
+        sectionTitle: 'JEVVO',
         sectionImage: 'assets/models/Jefaso/Jabba.png',
+        sectionModel: 'assets/models/Jefaso/Jabba.vox',
         subjects: [] 
     },
     {
@@ -153,12 +154,14 @@ function renderSectionPage(sectionId) {
     if (!container.dataset.initialized) {
         container.innerHTML = '';
         renderBannerCard(container, section);
+        
         if (section.subjects.length > 0) {
             const grid = document.createElement('div');
             grid.id = `${sectionId}-grid`;
             grid.className = 'dossiers-grid';
             container.appendChild(grid);
         }
+        
         container.dataset.initialized = "true";
     }
 
@@ -166,17 +169,19 @@ function renderSectionPage(sectionId) {
     if (!grid) return;
 
     if (section.subjects.length > 0) {
-        // Limpiar visores previos de este grid antes de borrar HTML
-        grid.querySelectorAll('.vox-canvas-wrapper').forEach(el => {
-            if (ACTIVE_VISORS.has(el.id)) {
-                ACTIVE_VISORS.get(el.id).dispose();
-                ACTIVE_VISORS.delete(el.id);
-            }
-        });
-
-        grid.classList.add('blinking');
+        grid.classList.add('imploding');
+        
         setTimeout(() => {
+            grid.querySelectorAll('.vox-canvas-wrapper').forEach(el => {
+                if (ACTIVE_VISORS.has(el.id)) {
+                    ACTIVE_VISORS.get(el.id).dispose();
+                    ACTIVE_VISORS.delete(el.id);
+                }
+            });
+
             grid.innerHTML = '';
+            grid.classList.remove('imploding');
+            
             const currentPage = PAGINATION_STATE[sectionId];
             const itemsPerPage = 2;
             const start = currentPage * itemsPerPage;
@@ -187,13 +192,17 @@ function renderSectionPage(sectionId) {
             });
 
             renderPaginationControls(sectionId);
-            grid.classList.remove('blinking');
+            grid.classList.add('exploding');
             
-            // Re-vincular elementos nuevos al LazyLoader si es necesario
             if (window.lazyObserver) {
                 grid.querySelectorAll('.vox-canvas-wrapper').forEach(el => window.lazyObserver.observe(el));
             }
-        }, 300);
+
+            setTimeout(() => {
+                grid.classList.remove('exploding');
+            }, 600);
+
+        }, 500);
     }
 }
 
@@ -201,34 +210,83 @@ function renderBannerCard(container, section) {
     const card = document.createElement('div');
     card.className = 'character-dossier banner-card';
     
-    if (section.id === 'jefaso') {
-        const viewerId = `vox-viewer-jefazo`;
-        card.innerHTML = `
-            <div class="dossier-header">
-                <div class="dossier-title"><h3>Comandante Supremo: <span>${section.sectionTitle}</span></h3></div>
+    const has3D = !!section.sectionModel;
+    const isJefaso = section.id === 'jefaso';
+    
+    card.innerHTML = `
+        <div class="dossier-header">
+            <div class="dossier-title">
+                <h3>${isJefaso ? 'Masista supremo' : 'Archivo Visual'}: 
+                <span class="${isJefaso ? 'glitch' : ''}" data-text="${section.sectionTitle}">${section.sectionTitle}</span></h3>
             </div>
-            <div class="dossier-main">
-                <div class="view-container"><div id="${viewerId}" class="vox-canvas-wrapper" data-model="assets/models/Jefaso/Jabba.vox">
-                    <p class="loading-text">SOLICITANDO ACCESO...</p>
-                </div><div class="view-tag">VISOR 3D</div></div>
-                <div class="view-container"><div class="render-frame"><img src="${section.sectionImage}"></div><div class="view-tag">RENDER HD</div></div>
+            ${has3D ? `<button class="view-3d-btn" onclick="toggleBanner3D('${section.id}', '${section.sectionImage}')">PROYECTAR 3D</button>` : ''}
+        </div>
+        <div class="dossier-main-single" id="${section.id}-main-content" style="position: relative; height: 550px; background: #000; overflow: hidden;">
+            <div class="render-frame-large" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; transition: opacity 0.5s ease; background: #000;">
+                <img src="${section.sectionImage}" class="section-hero-img">
             </div>
-            <div class="dossier-footer"><div class="footer-label">ALTO MANDO</div></div>
-        `;
-        container.appendChild(card);
-    } else {
-        card.innerHTML = `
-            <div class="dossier-header">
-                <div class="dossier-title"><h3>Archivo Visual: <span>${section.sectionTitle}</span></h3></div>
-            </div>
-            <div class="dossier-main-single">
-                <div class="render-frame-large"><img src="${section.sectionImage}" class="section-hero-img"></div>
-            </div>
-            <div class="dossier-footer"><div class="footer-label">DOCUMENTACIÓN GRÁFICA</div></div>
-        `;
-        container.appendChild(card);
-    }
+            ${has3D ? `
+            <div class="vox-canvas-wrapper" id="vox-viewer-special-${section.id}" data-model="${section.sectionModel}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 1; transition: opacity 0.5s ease;">
+                <p class="loading-text">INICIALIZANDO PROYECCIÓN...</p>
+            </div>` : ''}
+        </div>
+        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ALTO MANDO' : 'DOCUMENTACIÓN GRÁFICA'}</div></div>
+    `;
+    container.appendChild(card);
 }
+
+window.toggleBanner3D = (sectionId, originalImage) => {
+    const mainContent = document.getElementById(`${sectionId}-main-content`);
+    if (!mainContent) return;
+
+    const imgContainer = mainContent.querySelector('.render-frame-large');
+    const voxContainer = mainContent.querySelector('.vox-canvas-wrapper');
+    const btn = mainContent.closest('.character-dossier').querySelector('.view-3d-btn');
+    
+    const is3DActive = voxContainer.style.opacity === '1';
+
+    if (is3DActive) {
+        // Volver a imagen
+        voxContainer.classList.add('projecting-glitch');
+        
+        setTimeout(() => {
+            voxContainer.style.opacity = '0';
+            voxContainer.style.zIndex = '1';
+            imgContainer.style.opacity = '1';
+            imgContainer.style.zIndex = '2';
+            voxContainer.classList.remove('projecting-glitch');
+            btn.innerText = 'PROYECTAR 3D';
+        }, 400);
+    } else {
+        // Proyectar 3D
+        imgContainer.classList.add('projecting-glitch');
+        
+        // Efecto de interferencia (overlay)
+        const overlay = document.createElement('div');
+        overlay.className = 'glitch-overlay';
+        mainContent.appendChild(overlay);
+
+        setTimeout(() => {
+            imgContainer.style.opacity = '0';
+            imgContainer.style.zIndex = '1';
+            voxContainer.style.opacity = '1';
+            voxContainer.style.zIndex = '2';
+            voxContainer.classList.add('projection-active');
+            imgContainer.classList.remove('projecting-glitch');
+            btn.innerText = 'VOLVER AL RENDER';
+            
+            // Forzar carga 3D si no está cargado
+            if (window.lazyObserver) {
+                window.lazyObserver.observe(voxContainer);
+            }
+            
+            setTimeout(() => {
+                overlay.remove();
+                voxContainer.classList.remove('projection-active');
+            }, 800);
+        }, 400);
+    }
+};
 
 function renderSubjectCard(container, subject, globalIdx) {
     const card = document.createElement('div');
@@ -248,7 +306,6 @@ function renderSubjectCard(container, subject, globalIdx) {
     container.appendChild(card);
 }
 
-// --- Lazy Loading de Visores ---
 function initLazyLoading() {
     const options = {
         root: null,
@@ -260,15 +317,12 @@ function initLazyLoading() {
         entries.forEach(entry => {
             const container = entry.target;
             const modelPath = container.getAttribute('data-model');
-            
             if (entry.isIntersecting) {
-                
                 if (!ACTIVE_VISORS.has(container.id)) {
                     const visor = init3DVisor(container.id, modelPath);
                     if (visor) ACTIVE_VISORS.set(container.id, visor);
                 }
             } else {
-                
                 if (ACTIVE_VISORS.has(container.id)) {
                     ACTIVE_VISORS.get(container.id).dispose();
                     ACTIVE_VISORS.delete(container.id);
@@ -278,7 +332,6 @@ function initLazyLoading() {
         });
     }, options);
 
-    // Observar visores iniciales
     document.querySelectorAll('.vox-canvas-wrapper[data-model]').forEach(el => window.lazyObserver.observe(el));
 }
 
@@ -309,7 +362,6 @@ window.changePage = (sectionId, direction) => {
     renderSectionPage(sectionId);
 };
 
-// --- Motor 3D con Gestión de Memoria ---
 function init3DVisor(containerId, modelPath) {
     const container = document.getElementById(containerId);
     if (!container) return null;
@@ -364,7 +416,6 @@ function init3DVisor(containerId, modelPath) {
     }
     animate();
 
-    // Función de limpieza para liberar GPU y memoria
     return {
         dispose: () => {
             cancelAnimationFrame(animationId);
@@ -378,7 +429,6 @@ function init3DVisor(containerId, modelPath) {
                 }
             });
             if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
-            console.log(`Visor ${containerId} liberado.`);
         }
     };
 }

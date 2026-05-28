@@ -42,6 +42,104 @@
     }
 }
 
+/* Implosion / Explosion Effect for Dossiers */
+@keyframes implode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1) blur(0px);
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+        filter: brightness(2) blur(10px);
+    }
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+        filter: brightness(2) blur(10px);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1) blur(0px);
+    }
+}
+
+/* Epic Holographic Projection Keyframes */
+@keyframes hologram-glitch {
+    0% { opacity: 0.5; transform: skewX(0deg) scale(1); filter: hue-rotate(0deg) brightness(2); }
+    10% { opacity: 0.8; transform: skewX(20deg) scale(1.1); filter: hue-rotate(90deg) brightness(4); }
+    20% { opacity: 0.3; transform: skewX(-20deg) scale(0.9); filter: hue-rotate(180deg) brightness(1); }
+    30% { opacity: 1; transform: skewX(0deg) scale(1.05); filter: hue-rotate(270deg) brightness(3); }
+    100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes projection-beam {
+    0% { 
+        clip-path: inset(50% 0 50% 0); 
+        filter: brightness(10) blur(20px); 
+        transform: scaleY(0);
+    }
+    40% { 
+        clip-path: inset(0 0 0 0); 
+        filter: brightness(5) blur(10px); 
+        transform: scaleY(1.2);
+    }
+    100% { 
+        filter: brightness(1) blur(0px); 
+        transform: scaleY(1);
+    }
+}
+
+@keyframes static-noise {
+    0% { transform: translate(0,0); }
+    10% { transform: translate(-5%,-5%); }
+    20% { transform: translate(-10%,5%); }
+    30% { transform: translate(5%,-10%); }
+    40% { transform: translate(-5%,15%); }
+    50% { transform: translate(-10%,5%); }
+    60% { transform: translate(15%,0); }
+    70% { transform: translate(0,10%); }
+    80% { transform: translate(-15%,0); }
+    90% { transform: translate(10%,5%); }
+    100% { transform: translate(5%,0); }
+}
+
+.glitch-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    background-size: 100% 4px;
+    z-index: 100;
+    pointer-events: none;
+    animation: static-noise 0.2s infinite;
+    opacity: 0.5;
+}
+
+.glitch-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 255, 136, 0.1);
+    mix-blend-mode: overlay;
+}
+
 /* Glitch Effect */
 .glitch {
     position: relative;

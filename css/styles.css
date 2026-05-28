@@ -319,6 +319,7 @@ h2 {
     width: 100%;
     margin-top: 0;
     min-height: 700px;
+    perspective: 1000px;
 }
 
 .dossiers-grid .dossiers-grid:empty {
@@ -326,8 +327,23 @@ h2 {
     display: none;
 }
 
-.dossiers-grid.blinking {
-    opacity: 0;
+/* Clases de Animación para Pestañeo Implosivo */
+.imploding .character-dossier {
+    animation: implode 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.exploding .character-dossier {
+    animation: explode 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Efectos de Proyección Épica (Rey Jebbo) */
+.projecting-glitch {
+    animation: hologram-glitch 0.4s ease-out forwards;
+}
+
+.projection-active {
+    animation: projection-beam 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
 }
 
 .pagination-controls {
@@ -467,6 +483,25 @@ h2 {
     color: rgba(255, 255, 255, 0.4);
 }
 
+.view-3d-btn {
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid var(--color-ui-holograma);
+    color: var(--color-ui-holograma);
+    padding: 6px 15px;
+    cursor: pointer;
+    font-family: var(--font-header);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+}
+
+.view-3d-btn:hover {
+    background: var(--color-ui-holograma);
+    color: #000;
+    box-shadow: 0 0 20px var(--color-ui-holograma);
+}
+
 .dossier-status {
     font-family: var(--font-header);
     font-size: 0.7rem;
@@ -510,6 +545,32 @@ h2 {
     border: 1px solid rgba(255, 255, 255, 0.05);
     position: relative;
     overflow: hidden;
+}
+
+.vox-canvas-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+    background-size: 100% 4px;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.vox-canvas-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 50%, rgba(0, 255, 136, 0.05) 100%);
+    z-index: 4;
+    pointer-events: none;
 }
 
 .render-frame img {

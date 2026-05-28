@@ -3,29 +3,103 @@ document.addEventListener('DOMContentLoaded', () => {
     const introContainer = document.getElementById('intro-container');
     const mainSite = document.getElementById('main-site');
     const mainNav = document.getElementById('main-nav');
+    
+    // Elementos de Audio
+    const bgMusic = document.getElementById('bg-music');
+    const mainMusic = document.getElementById('main-music');
+    const audioToggle = document.getElementById('audio-toggle');
 
     const showMainSite = () => {
         if (introContainer) introContainer.style.display = 'none';
         if (mainSite) mainSite.classList.remove('hidden');
         if (mainNav) mainNav.classList.remove('hidden');
+        
+        // Transición de música: detener intro, iniciar principal
+        if (bgMusic) {
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+        }
+        if (mainMusic) {
+            mainMusic.muted = bgMusic ? bgMusic.muted : false;
+            mainMusic.play().catch(e => console.log("Error al iniciar música principal"));
+        }
+        
         initScrollAnimations();
         initDossiers();
         window.scrollTo(0, 0);
     };
 
-    const initScrollAnimations = () => {
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, observerOptions);
-        document.querySelectorAll('.vfx-reveal').forEach(el => observer.observe(el));
-    };
+    // Lógica de Audio
+    if (bgMusic && audioToggle) {
+        bgMusic.volume = 1.0; 
+        if (mainMusic) mainMusic.volume = 1.0;
+
+        const forcePlay = () => {
+            if (introContainer && introContainer.style.display !== 'none') {
+                bgMusic.play().then(() => {
+                    console.log("Audio de intro forzado con éxito.");
+                    // Una vez que suena, quitamos los listeners de "intento"
+                    document.removeEventListener('mousedown', forcePlay);
+                    document.removeEventListener('keydown', forcePlay);
+                    document.removeEventListener('touchstart', forcePlay);
+                }).catch(err => {
+                    console.log("Esperando interacción para sonar...");
+                });
+            }
+        };
+
+        // Intentar sonar al cargar
+        forcePlay();
+
+        // Listeners globales agresivos (mousedown y touchstart son más rápidos que click)
+        document.addEventListener('mousedown', forcePlay);
+        document.addEventListener('keydown', forcePlay);
+        document.addEventListener('touchstart', forcePlay);
+
+        // Control de silencio sincronizado
+        audioToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isMuted = !bgMusic.muted;
+            
+            if (bgMusic) bgMusic.muted = isMuted;
+            if (mainMusic) mainMusic.muted = isMuted;
+            
+            audioToggle.classList.toggle('muted');
+            audioToggle.innerHTML = isMuted ? '🔇' : '🔊';
+            
+            // Si el usuario le da al botón y estaba pausado por el navegador, forzamos play
+            if (!isMuted) {
+                if (introContainer && introContainer.style.display !== 'none') {
+                    bgMusic.play();
+                } else if (mainMusic) {
+                    mainMusic.play();
+                }
+            }
+        });
+    }
 
     if (skipButton) skipButton.addEventListener('click', showMainSite);
+    
+    // También permitir saltar intro con la tecla espacio
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && introContainer && introContainer.style.display !== 'none') {
+            e.preventDefault();
+            showMainSite();
+        }
+    });
 });
 
+const initScrollAnimations = () => {
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, observerOptions);
+    document.querySelectorAll('.vfx-reveal').forEach(el => observer.observe(el));
+};
+
+// --- Gestión Dinámica de Dossiers ---
 // --- Configuración de Datos ---
 const SECTIONS_DATA = [
     {

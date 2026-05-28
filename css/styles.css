@@ -910,3 +910,44 @@ footer {
     h1.glitch { font-size: 3rem; }
     .sub-title { font-size: 1.5rem; }
 }
+
+/* Control de Audio */
+.audio-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--color-gobierno-azul);
+    color: var(--color-gobierno-azul);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--color-gobierno-azul);
+}
+
+.audio-control:hover {
+    background: var(--color-gobierno-azul);
+    color: black;
+    box-shadow: 0 0 20px var(--color-gobierno-azul);
+}
+
+.audio-control.muted {
+    border-color: var(--color-ui-sable-rojo);
+    color: var(--color-ui-sable-rojo);
+    box-shadow: 0 0 10px var(--color-ui-sable-rojo);
+}
+
+.audio-control.muted:hover {
+    background: var(--color-ui-sable-rojo);
+    color: black;
+    box-shadow: 0 0 20px var(--color-ui-sable-rojo);
+}
+
+

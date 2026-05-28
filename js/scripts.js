@@ -4,6 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainSite = document.getElementById('main-site');
     const mainNav = document.getElementById('main-nav');
     const navLogoBtn = document.getElementById('nav-logo-btn');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navMenu = document.getElementById('nav-menu');
+
+    // Lógica de Menú Móvil
+    if (mobileMenuBtn && navMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('open');
+            navMenu.classList.toggle('active');
+        });
+
+        // Cerrar menú al hacer click en un link
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('open');
+                navMenu.classList.remove('active');
+            });
+        });
+    }
     
     const bgMusic = document.getElementById('bg-music');
     const mainMusic = document.getElementById('main-music');
@@ -209,6 +227,16 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             showMainSite();
         }
+    });
+
+    // Manejar redimensionamiento para visores 3D activos
+    window.addEventListener('resize', () => {
+        ACTIVE_VISORS.forEach((visor, containerId) => {
+            const container = document.getElementById(containerId);
+            if (container && visor.updateSize) {
+                visor.updateSize(container.clientWidth, container.clientHeight);
+            }
+        });
     });
 });
 
@@ -558,6 +586,11 @@ function init3DVisor(containerId, modelPath) {
     animate();
 
     return {
+        updateSize: (width, height) => {
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        },
         dispose: () => {
             cancelAnimationFrame(animationId);
             renderer.dispose();

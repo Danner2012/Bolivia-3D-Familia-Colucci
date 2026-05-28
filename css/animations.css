@@ -6,7 +6,7 @@
     max-width: 1000px;
     height: 100%;
     margin: 0 auto;
-    font-size: 3rem;
+    font-size: clamp(1.2rem, 5vw, 3rem); /* Fuente fluida para el crawl */
     font-weight: 700;
     perspective: 5000px;
 }

@@ -218,9 +218,9 @@ const SECTIONS_DATA = [
             { name: 'Droide B-2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide3.vox' },
             { name: 'Droide B-3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide4.vox' },
             { name: 'Droide B-4', id: 'DB-005', model: 'assets/models/Droides_Basic/droide5.vox' },
-            { name: 'Mega Droide M-0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox' },
-            { name: 'Mega Droide M-1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' },
-            { name: 'Mega Droide M-2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox' }
+            { name: 'Super Droide M-0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox' },
+            { name: 'Super Droide M-1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' },
+            { name: 'Super Droide M-2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox' }
         ]
     }
 ];
@@ -319,7 +319,7 @@ function renderBannerCard(container, section) {
                 <p class="loading-text">INICIALIZANDO PROYECCIÓN...</p>
             </div>` : ''}
         </div>
-        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ALTO MANDO' : 'DOCUMENTACIÓN GRÁFICA'}</div></div>
+        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ARCHIVO VISUAL DEL ALTO MANDO SEPARATISTA' : 'DOCUMENTACIÓN GRÁFICA TOMADA EN CAMPO'}</div></div>
     `;
     container.appendChild(card);
 }
@@ -383,14 +383,14 @@ function renderSubjectCard(container, subject, globalIdx) {
     const viewerId = `vox-viewer-${globalIdx}`;
     card.innerHTML = `
         <div class="dossier-header">
-            <div class="dossier-title"><h3>Sujeto: <span>${subject.name}</span></h3></div>
+            <div class="dossier-title"><h3>Archivo: <span>${subject.name}</span></h3></div>
         </div>
         <div class="dossier-main-single">
             <div class="view-container"><div id="${viewerId}" class="vox-canvas-wrapper" data-model="${subject.model}">
                 <p class="loading-text">CARGANDO MODELO...</p>
-            </div><div class="view-tag">INTERACTIVO 3D</div></div>
+            </div><div class="view-tag">HOLOGRAMA INTERACTIVO 3D</div></div>
         </div>
-        <div class="dossier-footer"><div class="footer-label">REPORTE TÁCTICO</div></div>
+        <div class="dossier-footer"><div class="footer-label">REPORTE TÁCTICO VISUAL</div></div>
     `;
     container.appendChild(card);
 }

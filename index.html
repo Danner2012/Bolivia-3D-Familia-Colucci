@@ -1,122 +1,325 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bolivia Wars: La Amenaza Masista</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Condensed:ital,wght@0,300;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/animations.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Condensed:ital,wght@0,300;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+
+    <!-- Librerías 3D (Carga prioritaria) -->
+    <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/VOXLoader.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+  </head>
+  <body>
+    <!-- Control de Audio -->
+    <audio id="bg-music" src="assets/music/intro.mpeg" loop autoplay></audio>
+    <audio id="main-music" src="assets/music/principal.mpeg" loop></audio>
+    <button
+      id="audio-toggle"
+      class="audio-control"
+      title="Silenciar/Activar música"
+    >
+      🔊
+    </button>
+
     <!-- Star Wars Crawl Intro -->
     <div id="intro-container">
-        <p class="intro-text">En una galaxia muy, muy lejana... o sea, La Paz, Bolivia</p>
-        <div id="crawl">
-            <div id="crawl-content">
-                <h1>Bolivia Wars: La Amenaza Masista</h1>
-                <p>La batalla había comenzado a las 9 de la mañana, puntual como nunca había sido nada en la historia de la República, lo cual ya era una señal de que algo andaba muy mal.</p>
-                <p>Desde lo alto del Palacio de Gobierno, el Comandante CT-7743 "Ponchohead" observó el horizonte con sus binoculares y vio lo que temía: una marea naranja y roja avanzando por la Avenida Camacho.</p>
-                <p>Miles de droides de batalla masistas marchaban en formación, aunque "formación" era una palabra generosa para describir lo que era esencialmente un tumulto con rifles bláster.</p>
-                <p>— Señal de la República, señal de la República — repetía el dioide de comunicaciones con voz de locutor de radio FM —. El camino está bloqueado. Se recomienda paciencia y snacks.</p>
-                <p>Nadie tenía paciencia. Nadie tenía snacks.</p>
-                <p>FIN DEL CAPÍTULO I</p>
-            </div>
+      <p class="intro-text">
+        En un chapare muy, muy lejano... o sea, La Paz Bolivia
+      </p>
+
+      <div id="crawl">
+        <div id="crawl-content">
+          <div class="intro-logo-crawl">BOLIVIA WARS</div>
+          <p>
+            La batalla había comenzado a las 9 de la mañana, puntual como nunca
+            había sido nada en la historia de la República, lo cual ya era una
+            señal de que algo andaba muy mal.
+          </p>
+          <p>
+            Desde lo alto del Palacio de Gobierno, el Comandante CT-7743
+            "Ponchohead" observó el horizonte con sus binoculares y vio lo que
+            temía: una marea naranja y roja avanzando por la Avenida Camacho.
+          </p>
+          <p>
+            Miles de droides de batalla masistas marchaban en formación, aunque
+            "formación" era una palabra generosa para describir lo que era
+            esencialmente un tumulto con rifles bláster.
+          </p>
+          <p>
+            — Señal de la República, señal de la República — repetía el dioide
+            de comunicaciones con voz de locutor de radio FM —. El camino está
+            bloqueado. Se recomienda paciencia y snacks.
+          </p>
+          <p>Nadie tenía paciencia. Nadie tenía snacks.</p>
+          <p>FIN DEL CAPÍTULO I</p>
         </div>
-        <button id="skip-intro">Saltar Intro (Espacio)</button>
+      </div>
+      <button id="skip-intro">Saltar Intro (Espacio)</button>
     </div>
 
+    <!-- Barra de Navegación -->
+    <nav id="main-nav" class="hidden">
+      <div class="nav-logo">BOLIVIA WARS</div>
+      <ul>
+        <li><a href="#hero">Inicio</a></li>
+        <li><a href="#equipo">Resistencia</a></li>
+        <li><a href="#narrativa">Crónica</a></li>
+        <li><a href="#proceso">Bitácora</a></li>
+      </ul>
+    </nav>
+
     <main id="main-site" class="hidden">
-        <!-- Hero Section -->
-        <header id="hero">
-            <h1 class="glitch" data-text="BOLIVIA WARS">BOLIVIA WARS</h1>
-            <h2 class="sub-title">La Amenaza Masista</h2>
-            <p class="tagline">El Retorno del Bloqueo</p>
-        </header>
+      <!-- Hero Section -->
+      <header id="hero" class="vfx-reveal">
+        <div class="hero-content">
+          <h1 class="glitch" data-text="BOLIVIA WARS">BOLIVIA WARS</h1>
+          <h2 class="sub-title">La Amenaza Masista</h2>
+          <div class="saber-divider blue"></div>
+          <p class="tagline">El Retorno del Bloqueo</p>
+        </div>
+        <div class="scroll-indicator"><span></span></div>
+      </header>
 
-        <!-- Equipo Section -->
-        <section id="equipo">
-            <h2>Equipo de Resistencia</h2>
-            <div class="team-grid">
-                <!-- EDITAR AQUÍ LOS NOMBRES DE LOS INTEGRANTES -->
-                <div class="member-card">
-                    <div class="card-holo"></div>
-                    <h3>Nombre Integrante 1</h3>
-                    <p>Rango: Comandante</p>
-                </div>
-                <div class="member-card">
-                    <div class="card-holo"></div>
-                    <h3>Nombre Integrante 2</h3>
-                    <p>Rango: Maestro Jedi</p>
-                </div>
-                <div class="member-card">
-                    <div class="card-holo"></div>
-                    <h3>Nombre Integrante 3</h3>
-                    <p>Rango: Piloto Rebelde</p>
-                </div>
+      <!-- Equipo Section -->
+      <section id="equipo" class="vfx-reveal">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2>Equipo de Resistencia</h2>
+        </div>
+        <div class="team-grid">
+          <div class="member-card">
+            <div class="card-inner">
+              <div class="card-front">
+                <div class="card-holo"></div>
+                <h3>Samuel Lima Espindola</h3>
+                <span class="rank">Comandante</span>
+              </div>
+              <div class="card-back">
+                <p>Especialista en tácticas de bloqueo y salteñas.</p>
+              </div>
             </div>
-        </section>
-
-        <!-- Narrativa Section -->
-        <section id="narrativa">
-            <h2>Crónica de la Galaxia Paceña</h2>
-            <div class="story-container">
-                <article class="story-part masistas">
-                    <h3>El Trono de Papel Aluminio</h3>
-                    <p>Jabba el Masista presidía la batalla desde su trono dorado: una silla de plástico blanca de jardín a la que alguien había pegado papel aluminio. Cuatro droides lo cargaban en andas. "Oiga, jefe, yo creo que somos tres", dijo uno. "El B-27 se dobló en la subida", respondió otro. "Para efectos prácticos es lo mismo".</p>
-                </article>
-
-                <article class="story-part clones">
-                    <h3>¿Atacamos o Merendamos?</h3>
-                    <p>Un escuadrón de clones se topó con una barricada de cajones de mandarina. "¿Atacamos?" preguntó CT-9981 "Salteñas". "¿Y si hay mandarinas adentro?" respondió CT-0042 "Llajwa". Hubo una pausa larga y filosófica. "Rodeamos".</p>
-                </article>
-
-                <article class="story-part masistas">
-                    <h3>El Cañón de Plasma</h3>
-                    <p>Tres droides masistas intentaban operar un cañón de plasma. El manual estaba en Huttese y el droide que sabía leer se había ido a almorzar. "Aprieta el botón rojo rojo", dijo uno. El cañón disparó hacia su propio campamento. Nadie resultó herido porque todos estaban almorzando.</p>
-                </article>
-
-                <article class="story-part tregua">
-                    <h3>La Tregua de la Salteña</h3>
-                    <p>A las 2 de la tarde se declaró una tregua para el almuerzo. Clones y droides compartieron la fila de una señora que vendía salteñas. Jabba pedía más chicharrón, mientras sus droides deliberaban si el sindicato galáctico cubría hernias de disco.</p>
-                </article>
-
-                <article class="story-part final">
-                    <h3>La Guerra Continúa</h3>
-                    <p>La guerra continuaría. Como siempre. Como todo en Bolivia: con mucho drama, bastante humor involuntario, y nadie terminando de ganar del todo. Una nueva esperanza de que alguien cierre la tranca.</p>
-                </article>
+          </div>
+          <div class="member-card">
+            <div class="card-inner">
+              <div class="card-front">
+                <div class="card-holo"></div>
+                <h3>Danner Pantoja Esteban</h3>
+                <span class="rank">Maestro Jedi</span>
+              </div>
+              <div class="card-back">
+                <p>Guardián del equilibrio en la Plaza Murillo.</p>
+              </div>
             </div>
-        </section>
-
-        <div class="saber-divider blue"></div>
-
-        <!-- Proceso de Diseño Section -->
-        <section id="proceso">
-            <h2>Registro Visual del Proceso</h2>
-            <div class="proceso-grid">
-                <div class="proceso-item">
-                    <div class="image-placeholder">Concepto</div>
-                    <p>Conceptualización de la ucrónica boliviana.</p>
-                </div>
-                <div class="proceso-item">
-                    <div class="image-placeholder">Modelado</div>
-                    <p>Diseño de personajes y entornos híbridos.</p>
-                </div>
-                <div class="proceso-item">
-                    <div class="image-placeholder">Prototipo</div>
-                    <p>Maquetación del micrositio interactivo.</p>
-                </div>
+          </div>
+          <div class="member-card">
+            <div class="card-inner">
+              <div class="card-front">
+                <div class="card-holo"></div>
+                <h3>Nils Benjamin</h3>
+                <span class="rank">Piloto Rebelde</span>
+              </div>
+              <div class="card-back">
+                <p>Experto en maniobras evasivas por la Ceja.</p>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <footer>
-            <p>&copy; 2026 Bolivia Wars: La Amenaza Masista. Todos los derechos reservados a la Galaxia Paceña.</p>
-        </footer>
+      <div class="saber-divider red"></div>
+
+      <!-- Narrativa Section -->
+      <section id="narrativa" class="vfx-reveal">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2>Crónica de la Galaxia Paceña</h2>
+        </div>
+        <div class="story-timeline">
+          <
+          <article class="story-part masistas vfx-slide-left">
+            <div class="story-content">
+              <h3>El Trono de Papel Aluminio pintado con Spray Dorado</h3>
+              <p>
+                Desde su imponente trono, una reliquia de sofá desvencijado,
+                estratégicamente envuelto en papel aluminio y rociado con el más
+                fino Monopol Oro, Jabba el Masista Supremo orquestaba la épica
+                batalla. Seis leales droides, con la espalda ya crujiendo, lo
+                transportaban en andas. “Jefe, con todo respeto, creo que somos
+                cinco”, balbuceó uno, mientras otro, con la voz ahogada por el
+                esfuerzo, replicó: “El F-21 se dobló en la subida y bueno hasta
+                ahi llego. Para efectos prácticos, es lo mismo”.
+              </p>
+              <p>
+                Con un gesto de su mano, Jabba emitió el Decreto Galáctico Nº 1:
+                el palacio ya estaba bajo su control. Un detalle menor: nadie
+                dentro del palacio se había enterado aún. Pero, ¿qué importaba?
+                El acceso principal seguía bloqueado por una tranca cuya autoría
+                era un misterio incluso para los propios manifestantes. Un
+                verdadero enigma de la ingeniería social.
+              </p>
+            </div>
+          </article>
+
+          <article class="story-part clones vfx-slide-right">
+            <div class="story-content">
+              <h3>¿Atacamos o Merendamos? La Dilema del Clon Milico</h3>
+              <p>
+                Un escuadrón de clones milicos, con sus uniformes impecables y
+                sus tácticas de manual, se topó de bruces con una barricada de
+                cajones de mandarina, estratégicamente ubicada a la altura del
+                portón norte. “¿Atacamos?”, preguntó CT-9981 “Salteñas”, con la
+                adrenalina a flor de piel. “¿Y si hay mandarinas adentro?”,
+                respondió CT-0042 “Llajwa”, con una sabiduría digna de un
+                filósofo de la guerra. Un silencio sepulcral, cargado de
+                profundas reflexiones existenciales, se apoderó del ambiente. La
+                decisión fue unánime: “Rodeamos”.
+              </p>
+              <p>
+                Lo que estos valientes clones ignoraban era que la barricada
+                había sido erigida por su propio bando, apenas tres horas antes,
+                como una medida preventiva de lo más ingeniosa. Una barricada
+                amiga, en toda regla. Pero el protocolo es el protocolo, y el
+                procedimiento de rodeo ya estaba en marcha. La lógica, a veces,
+                es un lujo que no todos pueden permitirse en el fragor de la
+                batalla.
+              </p>
+            </div>
+          </article>
+
+          <article class="story-part masistas vfx-slide-left">
+            <div class="story-content">
+              <h3>El "Cañón" de Plasma</h3>
+              <p>
+                Mientras tanto, los defensores del palacio, con la concentración
+                de cirujanos, intentaban operar un cañón de plasma. El manual,
+                escrito un idioma indescifrable el inglés, era un obstáculo
+                insalvable, y el único milico políglota se había esfumado en
+                busca de un almuerzo galáctico. “¡Aprieta el botón rojo rojo!”,
+                exclamó uno, con la autoridad de un estratega. El cañon emitio
+                un pitido y cual petardo exploto.
+              </p>
+              <p>
+                En su intento de defender contra los incasanbles droides
+                masistas, los milicos tomaron cañones viejo del relicario del
+                palacio, y cuales bolas de cañon cargaron y dispararon a los mas
+                duros y brutos de su compañia para poder defender el palacio que
+                se encontraba bajo asedio.
+              </p>
+            </div>
+          </article>
+
+          <article class="story-part masistas vfx-slide-right">
+            <div class="story-content">
+              <h3>El Emisario de la República</h3>
+              <p>
+                Un emisario de la República, con su maletín, su corbata
+                impecable y una fe inquebrantable en el poder del diálogo, hizo
+                su aparición a las cuatro (dos horas después de lo previsto,
+                pero, ¿quién lleva la cuenta en medio de una crisis?). Su
+                misión: sentar a ambos bandos para una charla civilizada. La
+                respuesta fue contundente: no había sillas. Todas habían sido
+                requisadas para fortificar el palacio. El objeto del conflicto,
+                por si alguien lo había olvidado, era el alarmante alza del
+                combustible espacial.
+              </p>
+              <p>
+                El emisario, imperturbable, tomó nota y propuso tres puntos
+                magistrales. El primero: que las partes “reconocieran la
+                legitimidad del proceso”. Nadie supo exactamente a qué proceso
+                se refería. El segundo: “iniciar una hoja de ruta”. Una hoja de
+                ruta sin mapa, por supuesto. El tercer punto fue abruptamente
+                interrumpido cuando CT-9981 “Salteñas”, con su instinto
+                infalible, detectó la presencia de salteñas restantes y se
+                retiró estratégicamente para asegurar su botín.
+              </p>
+            </div>
+          </article>
+
+          <article class="story-part final vfx-fade-in">
+            <div class="story-content">
+              <h3>La Guerra Continúa</h3>
+              <p>
+                Al caer la tarde, el palacio seguía bajo el control del mismo
+                bando de siempre, que, dependiendo de a quién le preguntaras,
+                era el bando contrario. La tranca, esa obra maestra de la
+                improvisación, seguía en su lugar. Nadie la había cerrado, nadie
+                recordaba quién tenía la llave, y lo más probable era que la
+                llave estuviera cómodamente instalada dentro del palacio. Un
+                misterio digno de los archivos Jedi.
+              </p>
+              <p>
+                Jabba, en un acto de suprema autoridad, emitió el Decreto
+                Galáctico Nº 2, declarando la “victoria” absoluta.
+                Simultáneamente, el bando defensor, con una audacia admirable,
+                emitió un comunicado afirmando que no había nada que defender,
+                ya que “nunca hubo” un ataque. Ambos documentos, joyas de la
+                retórica política, circularon con la velocidad de la luz en los
+                grupos de WhatsApp. Y, como era de esperarse, ambos recibieron
+                exactamente la misma cantidad de “👍” y “😱”. La galaxia, una
+                vez más, en perfecto equilibrio.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="saber-divider blue"></div>
+
+      <!-- Ejemplo 1: Jefaso -->
+      <section id="ejemplo-1" class="vfx-reveal">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2>Ejemplo 1: Comandantes Jefaso</h2>
+        </div>
+        <div id="jefaso-container" class="dossiers-grid"></div>
+      </section>
+
+      <div class="saber-divider red"></div>
+
+      <!-- Ejemplo 2: Defensas -->
+      <section id="ejemplo-2" class="vfx-reveal">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2>Ejemplo 2: Unidades de Defensa</h2>
+        </div>
+        <div id="defensas-container" class="dossiers-grid"></div>
+      </section>
+
+      <div class="saber-divider blue"></div>
+
+      <!-- Ejemplo 3: Droides -->
+      <section id="ejemplo-3" class="vfx-reveal">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2>Ejemplo 3: Batallón Droide</h2>
+        </div>
+
+        <div class="sub-section-header">
+          <h3>Droides Basic</h3>
+        </div>
+        <div id="droides-basic-container" class="dossiers-grid"></div>
+
+        <div class="sub-section-header" style="margin-top: 4rem">
+          <h3>Droides Mega</h3>
+        </div>
+        <div id="droides-mega-container" class="dossiers-grid"></div>
+      </section>
+
+      <footer>
+        <p>&copy; 2026 Bolivia Wars: La Amenaza Masista.</p>
+      </footer>
     </main>
 
     <script src="js/scripts.js"></script>
-</body>
+  </body>
 </html>

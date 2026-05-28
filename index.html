@@ -19,6 +19,7 @@
     <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/VOXLoader.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
   </head>
+
   <body>
     <!-- Control de Audio -->
     <audio id="bg-music" src="assets/music/intro.mpeg" loop autoplay></audio>
@@ -39,36 +40,10 @@
 
       <div id="crawl">
         <div id="crawl-content">
-          <div class="crawl-title">
-            <p>BOLIVIA WARS</p>
-            <h2>CAPÍTULO I</h2>
-            <h1>EL ASEDIO DE LAPAZ</h1>
-          </div>
-          <p>
-            La Confederación Masista, liderada por Jevvo el
-            Masista Supremo desde su trono de papel aluminio dorado, ha marchado
-            sobre el Palacio de Gobierno del planeta Lapaz exigiendo el fin del gobierno actual proclamandolo como inconstitucional.
-          </p>
-
-          <p>
-            Miles de droides de batalla avanzan por la Avenida Camacho en lo que
-            los algunos analistas del Senado Galáctico describen como una "formación
-            táctica" y el resto de la galaxia describe como un tumulto de maleantes armados con
-            rifles bláster.
-          </p>
-
-          <p>
-            Mientras tanto, las exhaustas fuerzas de la República, cada vez con menos munición,
-            sin sillas y sin el único clon políglota del batallón, preparan su
-            defensa con lo único que tienen disponible: el "protocolo", cañones de la
-            era antigua, y soldados suficientemente brutos como para ser
-            disparados por ellos.
-          </p>
-
-          <p>
-            El Senado Galáctico ha enviado un emisario. Nadie sabe exactamente
-            para qué....
-          </p>
+          <div class="intro-logo-crawl">BOLIVIA WARS</div>
+          <p class="crawl-p">La Confederación Masista, liderada por Jevvo el Masista Supremo desde su trono de papel aluminio dorado, ha marchado sobre el Palacio de Gobierno del planeta Lapaz exigiendo el fin del gobierno actual proclamandolo como inconstitucional.</p>
+          <p class="crawl-p">Miles de droides de batalla avanzan por la Avenida Camacho en lo que los algunos analistas del Senado Galáctico describen como una "formación táctica" y el resto de la galaxia describe como un tumulto de maleantes armados con rifles bláster.</p>
+          <p class="crawl-p">Mientras tanto, las exhaustas fuerzas de la República, cada vez con menos munición, sin sillas y sin el único clon políglota del batallón, preparan su defensa con lo único que tienen disponible: el "protocolo", cañones de la era antigua, y soldados suficientemente brutos como para ser disparados por ellos.</p>
         </div>
       </div>
       <button id="skip-intro">Saltar Intro (Espacio)</button>
@@ -76,7 +51,9 @@
 
     <!-- Barra de Navegación -->
     <nav id="main-nav" class="hidden">
-      <div id="nav-logo-btn" class="nav-logo" style="cursor: pointer;">BOLIVIA WARS</div>
+      <div id="nav-logo-btn" class="nav-logo" style="cursor: pointer">
+        BOLIVIA WARS
+      </div>
       <ul>
         <li><a href="#hero">Inicio</a></li>
         <li><a href="#equipo">Resistencia</a></li>
@@ -107,39 +84,48 @@
           <h2>Equipo de Resistencia</h2>
         </div>
         <div class="team-grid">
-          <div class="member-card">
+          <div class="member-card" data-github="Playeroide">
             <div class="card-inner">
               <div class="card-front">
                 <div class="card-holo"></div>
+                <div class="member-avatar-container">
+                    <img class="member-avatar" src="" alt="Avatar">
+                </div>
                 <h3>Samuel Lima Espindola</h3>
                 <span class="rank">Comandante</span>
               </div>
               <div class="card-back">
-                <p>Especialista en tácticas de bloqueo y salteñas.</p>
+                <img class="card-back-img" src="assets/models/goku.png" alt="Samuel Back">
               </div>
             </div>
           </div>
-          <div class="member-card">
+          <div class="member-card" data-github="Danner2012">
             <div class="card-inner">
               <div class="card-front">
                 <div class="card-holo"></div>
+                <div class="member-avatar-container">
+                    <img class="member-avatar" src="" alt="Avatar">
+                </div>
                 <h3>Danner Pantoja Esteban</h3>
                 <span class="rank">Maestro Jedi</span>
               </div>
               <div class="card-back">
-                <p>Guardián del equilibrio en la Plaza Murillo.</p>
+                <img class="card-back-img" src="assets/models/pou.png" alt="Danner Back">
               </div>
             </div>
           </div>
-          <div class="member-card">
+          <div class="member-card" data-github="MarioV6">
             <div class="card-inner">
               <div class="card-front">
                 <div class="card-holo"></div>
+                <div class="member-avatar-container">
+                    <img class="member-avatar" src="" alt="Avatar">
+                </div>
                 <h3>Nils Benjamin</h3>
                 <span class="rank">Piloto Rebelde</span>
               </div>
               <div class="card-back">
-                <p>Experto en maniobras evasivas por la Ceja.</p>
+                <img class="card-back-img" src="assets/models/Alice.png" alt="Nils Back">
               </div>
             </div>
           </div>
@@ -154,114 +140,42 @@
           <span class="section-number">02</span>
           <h2>Crónica de la Galaxia Paceña</h2>
         </div>
-        <div class="story-timeline">
-          <article class="story-part masistas vfx-slide-left">
-            <div class="story-content">
-              <h3>El Trono de Papel Aluminio pintado con Spray Dorado</h3>
-              <p>
-                Desde su imponente trono —una reliquia de sofá desvencijado,
-                estratégicamente envuelto en papel aluminio y rociado con el más
-                fino Monopol Oro— Jevvo el Masista Supremo orquestaba la épica
-                batalla con la solemnidad de quien cree, genuinamente, que está
-                cambiando el curso de la galaxia. Seis leales droides, con la
-                espalda ya crujiendo y las rodillas protestando, lo
-                transportaban en andas por las empedradas calles del planeta
-                Lapaz. "Jefe, con todo respeto, somos cinco", balbuceó uno.
-                Otro, con la voz ahogada por el esfuerzo, respondió
-                filosóficamente: "El F-21 se dobló en la subida. Para efectos
-                prácticos, es lo mismo, igual nadie le tiraba bola". ¡Ejecuten
-                la Orden 63.2-b: seguir cargando! exclamo Jevvo. Y con un gesto
-                augusto de su mano, Jevvo emitió el Decreto Separatista Nº 1: el
-                palacio ya estaba bajo control de la Confederación. Un detalle
-                menor: nadie dentro del palacio se había enterado aún.
-              </p>
-            </div>
-          </article>
+        <div class="chronicle-carousel">
+          <button id="chronicle-prev" class="carousel-nav" aria-label="Anterior">⟨</button>
+          
+          <div class="story-timeline">
+            <article class="story-part masistas vfx-slide-left active">
+              <div class="story-content">
+                <h3>El Trono de Papel Aluminio pintado con Spray Dorado</h3>
+                <p>Desde su imponente trono —una reliquia de sofá desvencijado, estratégicamente envuelto en papel aluminio y rociado con el más fino Monopol Oro— Jevvo el Masista Supremo orquestaba la épica batalla con la solemnidad de quien cree, genuinamente, que está cambiando el curso de la galaxia. Seis leales droides, con la espalda ya crujiendo y las rodillas protestando, lo transportaban en andas por las empedradas calles del planeta Lapaz. "Jefe, con todo respeto, somos cinco", balbuceó uno. Otro, con la voz ahogada por el esfuerzo, respondió filosóficamente: "El F-21 se dobló en la subida. Para efectos prácticos, es lo mismo, igual nadie le tiraba bola". ¡Ejecuten la Orden 63.2-b: seguir cargando! exclamo Jevvo. Y con un gesto augusto de su mano, Jevvo emitió el Decreto Separatista Nº 1: el palacio ya estaba bajo control de la Confederación. Un detalle menor: nadie dentro del palacio se había enterado aún.</p>
+              </div>
+            </article>
 
-          <article class="story-part clones vfx-slide-right">
-            <div class="story-content">
-              <h3>¿Atacamos o Merendamos? La Dilema del Clon Milico</h3>
-              <p>
-                Las fuerzas separatistas, lideradas por el carismático pero
-                cuestionable Jevvo, se podian ver al horizonte, clamando todo
-                tipo de insultos e injurios ante el nuevo Senado Galáctico,
-                clamando que estos tomaron el poder de forma inconstitucional,
-                la amenaza se acercaba cada vez más. Mientras tanto un escuadrón
-                de clones de la República, con sus uniformes fase II recién
-                salidos del horno de Kamargo y sus tácticas perfectamente
-                "memorizadas" del manual, se topó de bruces con una barricada de
-                cajones de madera sospechosos estratégicamente ubicada frente al
-                portón norte. "¿Ordenes jefe?", preguntó CT-9981 "El Salteña",
-                con la adrenalina a flor de piel y el blaster en alto. "¿Y si
-                hay mandarinas adentro?", respondió CT-0042 "Llajwa", con la
-                sabiduría de un maestro Jedi retirado por lesión. Un silencio
-                sepulcral se apoderó del ambiente. La decisión fue unánime,
-                histórica, inapelable: "Rodeamos. es una trampa". Con gran
-                deceipcion CT-9981 siguio las ordenes de su superior, lo que no
-                sabian los intrépidos soldados era que dicha barricada fue
-                levantada por otro escuandrón horas antes pero no se informo a
-                nadie ya que al mandar las comunicaciones por radio solo se
-                escucho una contestadora automática diciendo "No hay sistema
-                joven"
-              </p>
-            </div>
-          </article>
+            <article class="story-part clones vfx-slide-right">
+              <div class="story-content">
+                <h3>¿Atacamos o Merendamos? La Dilema del Clon Milico</h3>
+                <p>Las fuerzas separatistas, lideradas por el carismático pero cuestionable Jevvo, se podian ver al horizonte, clamando todo tipo de insultos e injurios ante el nuevo Senado Galáctico, clamando que estos tomaron el poder de forma inconstitucional, la amenaza se acercaba cada vez más. Mientras tanto un escuadrón de clones de la República, con sus uniformes fase II recién salidos del horno de Kamargo y sus tácticas perfectamente "memorizadas" del manual, se topó de bruces con una barricada de cajones de madera sospechosos estratégicamente ubicada frente al portón norte. "¿Ordenes jefe?", preguntó CT-9981 "El Salteña", con la adrenalina a flor de piel y el blaster en alto. "¿Y si hay mandarinas adentro?", respondió CT-0042 "Llajwa", con la sabiduría de un maestro Jedi retirado por lesión. Un silencio sepulcral se apoderó del ambiente. La decisión fue unánime, histórica, inapelable: "Rodeamos. es una trampa". Con gran deceipcion CT-9981 siguio las ordenes de su superior, lo que no sabian los intrépidos soldados era que dicha barricada fue levantada por otro escuandrón horas antes pero no se informo a nadie ya que al mandar las comunicaciones por radio solo se escucho una contestadora automática diciendo "No hay sistema joven"</p>
+              </div>
+            </article>
 
-          <article class="story-part masistas vfx-slide-left">
-            <div class="story-content">
-              <h3>El "Cañón" de Plasma</h3>
-              <p>
-                Mientras tanto, los defensores del palacio intentaban operar un
-                cañón de plasma adquirido en una licitación cuyo proceso de
-                compra el Senado Galáctico prefería no detallar. El manual,
-                redactado en Basic estándar, un dialecto olvidado a veces
-                conocido como inglés, era un obstáculo insalvable, y el único
-                clon políglota del batallón se había esfumado estratégicamente
-                en busca de almuerzo. "¡Aprieta el botón rojo!", exclamó uno. El
-                cañón emitió un pitido digno, una pequeña vibración
-                esperanzadora, y luego explotó con la energía contenida de tres
-                presupuestos mal ejecutados. Sin desanimarse porque los soldados
-                de la República no se desaniman, se readaptan recurrieron al
-                relicario del palacio: cañones de la era de la República
-                Antigua, sin embargo, tales dispositivos mas viejos que docentes
-                de Universidad Pública, tenian un pequeño detalle ignorado por
-                las tropas, la munición, inexistente en estos tiempos mas
-                "civilizados", sin opción alguna ya que las fuerzas masistas se
-                encontraban cada vez mas cerca del palacio los artilleros
-                cargaron en los cañones a sus soldados mas intrepidos, mas
-                capaces, mas brutos y mas resistentes para ser usados como
-                munición humana, al fin y al cabo, si fallaban el tiro la
-                perdida seria minima.
-              </p>
-            </div>
-          </article>
-          <article class="story-part masistas vfx-slide-right">
-            <div class="story-content">
-              <h3>El punto de Quiebre</h3>
-              <p>
-                Al caer la tarde sobre el planeta Lapaz, la quietud, ese recurso
-                no renovable que ningún bando había presupuestado, se agotó sin
-                previo aviso. Lo que había comenzado como una tensa coreografía
-                de decretos, barricadas de cajas sospechosas, escaló en cuestión
-                de minutos a algo que los historiadores galácticos clasificarían
-                más tarde, con notable creatividad académica, como "un incidente
-                de naturaleza compleja". El primer disparo nadie lo reclamó. El
-                segundo tampoco. Para el tercero ya había tres versiones
-                distintas circulando en el HoloNet, cada una con su propio
-                infográfico. Los droides masistas de Jevvo, energizados por el
-                Decreto Nº 2: "No hay gasolina espacial" y por una convicción
-                inquebrantable en su propia narrativa, avanzaron haci el portón
-                principal del Palacio de Gobierno con la determinación de quien
-                no tiene nada que perder excepto las rodillas. Los clones de la
-                República, que llevaban horas rodeando barricadas amigas y
-                cargando cañones con sus tropas, respondieron con lo único que
-                les quedaba: el protocolo "Ni modo joven".
-              </p>
-            </div>
-          </article>
+            <article class="story-part masistas vfx-slide-left">
+              <div class="story-content">
+                <h3>El "Cañón" de Plasma</h3>
+                <p>Mientras tanto, los defensores del palacio intentaban operar un cañón de plasma adquirido en una licitación cuyo proceso de compra el Senado Galáctico prefería no detallar. El manual, redactado en Basic estándar, un dialecto olvidado a veces conocido como inglés, era un obstáculo insalvable, y el único clon políglota del batallón se había esfumado estratégicamente en busca de almuerzo. "¡Aprieta el botón rojo!", exclamó uno. El cañón emitió un pitido digno, una pequeña vibración esperanzadora, y luego explotó con la energía contenida de tres presupuestos mal ejecutados. Sin desanimarse porque los soldados de la República no se desaniman, se readaptan recurrieron al relicario del palacio: cañones de la era de la República Antigua, sin embargo, tales dispositivos mas viejos que docentes de Universidad Pública, tenian un pequeño detalle ignorado por las tropas, la munición, inexistente en estos tiempos mas "civilizados", sin opción alguna ya que las fuerzas masistas se encontraban cada vez mas cerca del palacio los artilleros cargaron en los cañones a sus soldados mas intrepidos, mas capaces, mas brutos y mas resistentes para ser usados como munición humana, al fin y al cabo, si fallaban el tiro la perdida seria minima.</p>
+              </div>
+            </article>
+
+            <article class="story-part clones vfx-slide-right">
+              <div class="story-content">
+                <h3>El punto de Quiebre</h3>
+                <p>Al caer la tarde sobre el planeta Lapaz, la quietud, ese recurso no renovable que ningún bando había presupuestado, se agotó sin previo aviso. Lo que había comenzado como una tensa coreografía de decretos, barricadas de cajas sospechosas, escaló en cuestión de minutos a algo que los historiadores galácticos clasificarían más tarde, con notable creatividad académica, como "un incidente de naturaleza compleja". El primer disparo nadie lo reclamó. El segundo tampoco. Para el tercero ya había tres versiones distintas circulando en el HoloNet, cada una con su propio infográfico. Los droides masistas de Jevvo, energizados por el Decreto Nº 2: "No hay gasolina espacial" y por una convicción inquebrantable en su propia narrativa, avanzaron haci el portón principal del Palacio de Gobierno con la determinación de quien no tiene nada que perder excepto las rodillas. Los clones de la República, que llevaban horas rodeando barricadas amigas y cargando cañones con sus tropas, respondieron con lo único que les quedaba: el protocolo "Ni modo joven".</p>
+              </div>
+            </article>
+          </div>
+
+          <button id="chronicle-next" class="carousel-nav" aria-label="Siguiente">⟩</button>
         </div>
       </section>
-
       <div class="saber-divider blue"></div>
 
       <!-- Ejemplo 1: Jefaso -->
@@ -293,9 +207,7 @@
           <h2>Ejemplo 3: Batallón Droide</h2>
         </div>
 
-        <div class="sub-section-header">
-          <h3>Droides Basic</h3>
-        </div>
+        <div class="sub-section-header"></div>
         <div id="droides-basic-container" class="dossiers-grid"></div>
 
         <div class="sub-section-header" style="margin-top: 4rem">

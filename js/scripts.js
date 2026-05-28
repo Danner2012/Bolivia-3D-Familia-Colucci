@@ -26,7 +26,58 @@ document.addEventListener('DOMContentLoaded', () => {
         initScrollAnimations();
         initDossiers();
         initLazyLoading(); // Iniciar observador de visores
+        initChronicleCarousel(); // Iniciar carrusel de narrativa
+        fetchGitHubAvatars(); // Cargar fotos de perfil de GitHub
         window.scrollTo(0, 0);
+    };
+
+    const fetchGitHubAvatars = () => {
+        document.querySelectorAll('.member-card[data-github]').forEach(card => {
+            const username = card.getAttribute('data-github');
+            const img = card.querySelector('.member-avatar');
+            
+            if (username && img) {
+                fetch(`https://api.github.com/users/${username}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.avatar_url) {
+                            img.src = data.avatar_url;
+                        } else {
+                            img.src = 'https://github.com/identicons/jedi.png'; // Fallback
+                        }
+                    })
+                    .catch(err => {
+                        console.error(`Error al cargar avatar de ${username}:`, err);
+                        img.src = 'https://github.com/identicons/jedi.png';
+                    });
+            }
+        });
+    };
+
+    const initChronicleCarousel = () => {
+        const slides = document.querySelectorAll('.story-part');
+        const prevBtn = document.getElementById('chronicle-prev');
+        const nextBtn = document.getElementById('chronicle-next');
+        let currentSlide = 0;
+
+        if (!slides.length || !prevBtn || !nextBtn) return;
+
+        const updateSlides = (index) => {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) slide.classList.add('active');
+            });
+        };
+
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlides(currentSlide);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlides(currentSlide);
+        });
     };
 
     const showIntro = () => {

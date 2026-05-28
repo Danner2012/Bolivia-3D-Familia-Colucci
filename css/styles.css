@@ -409,6 +409,18 @@ h2 {
     overflow: hidden;
 }
 
+.section-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Asegura que la imagen se vea completa sin recortes */
+    opacity: 0.9;
+    transition: transform 0.5s ease;
+}
+
+.section-hero-img:hover {
+    transform: scale(1.02);
+}
+
 @media (max-width: 1200px) {
     .dossiers-grid {
         grid-template-columns: 1fr;

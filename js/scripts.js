@@ -58,14 +58,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const slides = document.querySelectorAll('.story-part');
         const prevBtn = document.getElementById('chronicle-prev');
         const nextBtn = document.getElementById('chronicle-next');
+        const currentCounter = document.getElementById('current-slide-num');
+        const totalCounter = document.getElementById('total-slides-num');
+        
         let currentSlide = 0;
 
         if (!slides.length || !prevBtn || !nextBtn) return;
 
+        // Inicializar contador total
+        if (totalCounter) {
+            totalCounter.textContent = slides.length.toString().padStart(2, '0');
+        }
+
         const updateSlides = (index) => {
             slides.forEach((slide, i) => {
                 slide.classList.remove('active');
-                if (i === index) slide.classList.add('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                    // Actualizar contador con formato 01, 02...
+                    if (currentCounter) {
+                        currentCounter.textContent = (i + 1).toString().padStart(2, '0');
+                    }
+                }
             });
         };
 
@@ -77,6 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.addEventListener('click', () => {
             currentSlide = (currentSlide + 1) % slides.length;
             updateSlides(currentSlide);
+        });
+        
+        // Soporte para teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevBtn.click();
+            if (e.key === 'ArrowRight') nextBtn.click();
         });
     };
 

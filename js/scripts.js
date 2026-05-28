@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const introContainer = document.getElementById('intro-container');
     const mainSite = document.getElementById('main-site');
     const mainNav = document.getElementById('main-nav');
+    const navLogoBtn = document.getElementById('nav-logo-btn');
     
     const bgMusic = document.getElementById('bg-music');
     const mainMusic = document.getElementById('main-music');
@@ -27,6 +28,43 @@ document.addEventListener('DOMContentLoaded', () => {
         initLazyLoading(); // Iniciar observador de visores
         window.scrollTo(0, 0);
     };
+
+    const showIntro = () => {
+        if (mainSite) mainSite.classList.add('hidden');
+        if (mainNav) mainNav.classList.add('hidden');
+        if (introContainer) {
+            introContainer.style.display = 'flex';
+            
+            // Reiniciar animaciones
+            const introText = introContainer.querySelector('.intro-text');
+            const crawlContent = document.getElementById('crawl-content');
+            
+            if (introText) {
+                introText.style.animation = 'none';
+                void introText.offsetWidth; // trigger reflow
+                introText.style.animation = 'fade-in-out 5s forwards';
+            }
+            
+            if (crawlContent) {
+                crawlContent.style.animation = 'none';
+                void crawlContent.offsetWidth; // trigger reflow
+                crawlContent.style.animation = 'crawl 90s linear forwards';
+                crawlContent.style.animationDelay = '5s';
+            }
+        }
+        
+        if (mainMusic) {
+            mainMusic.pause();
+            mainMusic.currentTime = 0;
+        }
+        if (bgMusic) {
+            bgMusic.muted = mainMusic ? mainMusic.muted : false;
+            bgMusic.play().catch(e => console.log("Error al iniciar música de intro"));
+        }
+        window.scrollTo(0, 0);
+    };
+
+    if (navLogoBtn) navLogoBtn.addEventListener('click', showIntro);
 
     if (bgMusic && audioToggle) {
         bgMusic.volume = 1.0; 

@@ -228,7 +228,7 @@ const SECTIONS_DATA = [
         id: 'ejemplo-0',
         containerId: 'ejemplo-0-container',
         sectionTitle: 'Render Principal',
-        sectionImage: 'assets/render/renderfinal.png', 
+        sectionImage: 'assets/render/reenderfinafinal.png', 
         subjects: []
     },
     {

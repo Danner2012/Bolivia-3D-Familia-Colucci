@@ -209,8 +209,8 @@ const SECTIONS_DATA = [
         id: 'jefaso',
         containerId: 'jefaso-container',
         sectionTitle: 'JEVVO',
-        sectionImage: 'assets/models/Jefaso/Jabba.png',
-        sectionModel: 'assets/models/Jefaso/Jabba.vox',
+        sectionImage: 'assets/render/jabbarender.png',
+        sectionModel: 'assets/models/Jefaso/jabba2.vox',
         subjects: [] 
     },
     {
@@ -219,18 +219,18 @@ const SECTIONS_DATA = [
         sectionTitle: 'Unidades de Defensa',
         sectionImage: 'assets/models/Defensas/Defensas.png',
         subjects: [
-            { name: 'Default', id: 'DF-001', model: 'assets/models/Defensas/Default.vox' },
-            { name: 'Rifle', id: 'DF-002', model: 'assets/models/Defensas/rifle.vox' },
-            { name: 'Rifleagachado', id: 'DF-003', model: 'assets/models/Defensas/rifleagachado.vox' },
-            { name: 'Espadita magica', id: 'DF-004', model: 'assets/models/Defensas/espadamistica.vox' },
-            { name: 'Sord', id: 'DF-005', model: 'assets/models/Defensas/sord.vox' },
+            { name: 'Defensor Base', id: 'DF-001', model: 'assets/models/Defensas/Default.vox' },
+            { name: 'Defensor Armado', id: 'DF-002', model: 'assets/models/Defensas/rifle.vox' },
+            { name: 'Defensor Táctico', id: 'DF-003', model: 'assets/models/Defensas/rifleagachado.vox' },
+            { name: 'Defensor EN GARDE!!', id: 'DF-004', model: 'assets/models/Defensas/espadamistica.vox' },
+            { name: 'Defensor Sord', id: 'DF-005', model: 'assets/models/Defensas/sord.vox' },
             { name: 'Mortero', id: 'DF-006', model: 'assets/models/Defensas/mortero.vox' },
-            { name: 'Mortero Pibe', id: 'DF-007', model: 'assets/models/Defensas/morteropibe.vox' },
-            { name: 'Escudito Escudoso', id: 'DF-008', model: 'assets/models/Defensas/escuditoescudoso.vox' },
-            { name: 'Aria', id: 'DF-009', model: 'assets/models/Defensas/Aria.vox' },
-            { name: 'Sunna', id: 'DF-010', model: 'assets/models/Defensas/Sunna.vox' },
-            { name: 'Nangong', id: 'DF-011', model: 'assets/models/Defensas/Nangong.vox' },
-            { name: 'Peter', id: 'DF-012', model: 'assets/models/Defensas/Petter.vox' }
+            { name: 'El Pibe del Mortero', id: 'DF-007', model: 'assets/models/Defensas/morteropibe.vox' },
+            { name: 'Defensor Defensor', id: 'DF-008', model: 'assets/models/Defensas/escuditoescudoso.vox' },
+            { name: 'Baja-1', id: 'DF-009', model: 'assets/models/Defensas/Aria.vox' },
+            { name: 'Baja-2', id: 'DF-010', model: 'assets/models/Defensas/Sunna.vox' },
+            { name: 'Baja-3', id: 'DF-011', model: 'assets/models/Defensas/Nangong.vox' },
+            { name: 'Baja-4', id: 'DF-012', model: 'assets/models/Defensas/Petter.vox' }
         ]
     },
     {
@@ -239,14 +239,14 @@ const SECTIONS_DATA = [
         sectionTitle: 'Batallón Droide',
         sectionImage: 'assets/models/Droides_Basic/Masistas.png',
         subjects: [
-            { name: 'Droide B-0', id: 'DB-001', model: 'assets/models/Droides_Basic/droide1.vox' },
-            { name: 'Droide B-1', id: 'DB-002', model: 'assets/models/Droides_Basic/droide2.vox' },
-            { name: 'Droide B-2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide3.vox' },
-            { name: 'Droide B-3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide4.vox' },
-            { name: 'Droide B-4', id: 'DB-005', model: 'assets/models/Droides_Basic/droide5.vox' },
-            { name: 'Super Droide M-0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox' },
-            { name: 'Super Droide M-1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' },
-            { name: 'Super Droide M-2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox' }
+            { name: 'Droide MA-S0', id: 'DB-001', model: 'assets/models/Droides_Basic/droide1.vox' },
+            { name: 'Droide MA-S1', id: 'DB-002', model: 'assets/models/Droides_Basic/droide2.vox' },
+            { name: 'Droide MA-S2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide3.vox' },
+            { name: 'Droide MA-S3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide4.vox' },
+            { name: 'Droide MA-S4', id: 'DB-005', model: 'assets/models/Droides_Basic/droide5.vox' },
+            { name: 'Droide Ponchado CO-B0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox' },
+            { name: 'Droide Ponchado CO-B1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' },
+            { name: 'Droide Ponchado CO-B2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox' }
         ]
     }
 ];
@@ -345,7 +345,7 @@ function renderBannerCard(container, section) {
                 <p class="loading-text">INICIALIZANDO PROYECCIÓN...</p>
             </div>` : ''}
         </div>
-        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ARCHIVO VISUAL DEL ALTO MANDO SEPARATISTA' : 'DOCUMENTACIÓN GRÁFICA TOMADA EN CAMPO'}</div></div>
+        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ARCHIVO VISUAL DEL ALTO MANDO SEPARATISTA' : 'VISTA GENERAL RENDERIZADA COMPLETA'}</div></div>
     `;
     container.appendChild(card);
 }
@@ -416,7 +416,7 @@ function renderSubjectCard(container, subject, globalIdx) {
                 <p class="loading-text">CARGANDO MODELO...</p>
             </div><div class="view-tag">HOLOGRAMA INTERACTIVO 3D</div></div>
         </div>
-        <div class="dossier-footer"><div class="footer-label">REPORTE TÁCTICO VISUAL</div></div>
+        <div class="dossier-footer"><div class="footer-label">DISEÑO 3D HECHO 100% A MANO</div></div>
     `;
     container.appendChild(card);
 }

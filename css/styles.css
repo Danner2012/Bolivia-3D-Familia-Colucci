@@ -21,7 +21,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 1100; /* Arriba del fondo negro del intro para que se vean */
     pointer-events: none;
 }
 
@@ -34,7 +34,7 @@ h1, h2, h3 {
     display: none;
 }
 
-/* --- Intro Styles --- */
+/* --- Transiciones Estilo Star Wars / PowerPoint (Wipes) --- */
 #intro-container {
     width: 100vw;
     height: 100vh;
@@ -48,6 +48,9 @@ h1, h2, h3 {
     left: 0;
     z-index: 1000;
     overflow: hidden;
+    /* Transición lenta y lineal para ese feeling de PowerPoint */
+    transition: clip-path 3s linear;
+    clip-path: inset(0 0 0 0);
 }
 
 .intro-text {
@@ -63,8 +66,12 @@ h1, h2, h3 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1500;
+    z-index: 1200; /* Por encima de las estrellas */
     text-shadow: 0 0 15px rgba(123, 200, 240, 0.4);
+}
+
+#crawl {
+    z-index: 1200; /* Por encima de las estrellas */
 }
 
 .intro-logo-crawl {
@@ -91,8 +98,38 @@ h1, h2, h3 {
     font-size: 1.2rem;
     text-transform: uppercase;
     transition: all 0.3s ease;
-    z-index: 2000;
+    z-index: 1300; /* El botón siempre arriba */
     letter-spacing: 2px;
+}
+
+#skip-intro:hover {
+    background: var(--color-ui-texto-crawl);
+    color: #000;
+    box-shadow: 0 0 20px var(--color-ui-texto-crawl);
+}
+
+/* Efecto 1: Barrido Lateral (Side Wipe) */
+#intro-container.wipe-side.active {
+    clip-path: inset(0 100% 0 0);
+}
+
+/* Efecto 2: Barrido de Cortina (Iris) */
+#intro-container.wipe-iris {
+    clip-path: circle(100% at 50% 50%);
+}
+#intro-container.wipe-iris.active {
+    clip-path: circle(0% at 50% 50%);
+}
+
+/* Efecto 3: Barrido Vertical (Bar Wipe) */
+#intro-container.wipe-bar.active {
+    clip-path: inset(0 0 100% 0);
+}
+
+/* El main site siempre abajo del intro durante la transición */
+main#main-site {
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fade-in-out {
@@ -189,6 +226,7 @@ header#hero {
 /* --- Secciones Mejoradas --- */
 .section-header {
     margin-bottom: 4rem;
+    margin-left: 3rem;
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -198,8 +236,11 @@ header#hero {
     font-family: var(--font-header);
     font-size: 4rem;
     color: transparent;
-    -webkit-text-stroke: 1px var(--color-ui-texto-crawl);
-    opacity: 0.5;
+    -webkit-text-stroke: 1.5px var(--color-ui-texto-crawl);
+    opacity: 1;
+    /* Intense Yellow Neon glow */
+    filter: drop-shadow(0 0 10px var(--color-ui-texto-crawl))
+            drop-shadow(0 0 20px rgba(240, 230, 140, 0.4));
 }
 
 h2 {
@@ -207,6 +248,18 @@ h2 {
     text-align: left;
     margin-bottom: 0;
     font-size: 2.5rem;
+    color: #fff;
+    /* Bright Yellow Neon glow for titles */
+    text-shadow: 
+        0 0 10px var(--color-ui-texto-crawl),
+        0 0 20px rgba(240, 230, 140, 0.6),
+        0 0 30px rgba(240, 230, 140, 0.4);
+    letter-spacing: 3px;
+}
+
+/* Unified style for all section headers */
+.section-number {
+    -webkit-text-stroke: 1.5px var(--color-ui-texto-crawl);
 }
 
 /* Team Grid */
@@ -309,22 +362,60 @@ h2 {
     font-size: 1.2rem;
 }
 
-/* Chronicle Section - Single Slide Controlled Carousel */
+/* Chronicle Section - Professional Storytelling Carousel */
 .chronicle-carousel {
     position: relative;
-    max-width: 1000px;
-    margin: 3rem auto;
+    max-width: 1200px;
+    margin: 4rem auto;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
+    padding: 0 1rem;
 }
 
 .story-timeline {
     flex-grow: 1;
-    display: block; /* Volver a block para manejo de slides */
-    overflow: hidden;
     position: relative;
-    min-height: 500px;
+    min-height: 550px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: rgba(10, 26, 46, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 136, 0.1);
+}
+
+/* Contador de Numeración */
+.carousel-counter {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    z-index: 10;
+    font-family: 'Orbitron', sans-serif;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    border: 1px solid var(--color-ui-holograma);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+#current-slide-num {
+    color: var(--color-ui-holograma);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.counter-divider {
+    width: 30px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#total-slides-num {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
 }
 
 .story-part {
@@ -335,84 +426,235 @@ h2 {
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transform: translateX(50px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1;
 }
 
 .story-part.active {
-    position: relative; /* La activa dicta la altura */
     opacity: 1;
     visibility: visible;
-    transform: translateX(0);
     z-index: 2;
 }
 
+.story-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+    gap: 0;
+}
+
+.story-layout.full-width {
+    grid-template-columns: 1fr;
+}
+
+.story-image {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+}
+
+.story-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) contrast(1.1);
+    transition: transform 1.5s ease;
+}
+
+.story-part.active .story-image img {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent 70%, rgba(10, 26, 46, 1));
+}
+
+.story-content {
+    padding: 4rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(10, 26, 46, 0.9);
+}
+
+.story-tag {
+    display: inline-block;
+    color: var(--color-ui-holograma);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.story-content h3 {
+    font-size: 2.2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.story-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.story-highlight {
+    border-left: 3px solid var(--color-ui-holograma);
+    padding-left: 1.5rem;
+    font-style: italic;
+    color: var(--color-ui-holograma) !important;
+    font-size: 1.2rem !important;
+}
+
+/* Navegación Refinada */
 .carousel-nav {
     background: rgba(0, 255, 136, 0.05);
-    border: 2px solid var(--color-ui-holograma);
+    border: 1px solid rgba(0, 255, 136, 0.3);
     color: var(--color-ui-holograma);
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 10;
-    flex-shrink: 0;
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(5px);
 }
 
 .carousel-nav:hover {
     background: var(--color-ui-holograma);
     color: #000;
-    box-shadow: 0 0 25px var(--color-ui-holograma);
-    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--color-ui-holograma);
+    transform: translateY(-5px);
 }
 
-.carousel-nav:active {
-    transform: scale(0.95);
-}
-
-.story-content {
-    background: rgba(10, 26, 46, 0.8);
-    padding: 3rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-}
-
-.story-content h3 {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.story-content p {
-    font-size: 1.15rem;
-    line-height: 1.9;
-    text-align: justify;
+@media (max-width: 992px) {
+    .story-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .story-image {
+        height: 250px;
+    }
+    
+    .image-overlay {
+        background: linear-gradient(to bottom, transparent 60%, rgba(10, 26, 46, 1));
+    }
+    
+    .story-content {
+        padding: 2rem;
+    }
+    
+    .story-timeline {
+        min-height: 700px;
+    }
 }
 
 @media (max-width: 768px) {
     .chronicle-carousel {
         flex-direction: column-reverse;
-        padding: 0 1rem;
+        gap: 1.5rem;
     }
     
-    .carousel-nav {
-        width: 50px;
-        height: 50px;
+    .carousel-counter {
+        top: 1rem;
+        right: 1rem;
+        padding: 0.3rem 0.8rem;
     }
 }
 
+/* --- Bocetos Carousel - Full Image Layout --- */
+.bocetos-carousel .story-timeline {
+    min-height: 600px;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.full-image-layout {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.full-image-layout img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.8s ease;
+    background: #000;
+}
+
+.boceto-part {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.boceto-part.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+
+.boceto-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 3rem 2rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    z-index: 5;
+    text-align: center;
+}
+
+.boceto-overlay h3 {
+    font-family: var(--font-header);
+    font-size: 2.5rem;
+    margin: 0;
+    color: #ffffff;
+    /* Mixed white and yellow style */
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(184, 134, 11, 0.4),
+        2px 2px 0px var(--color-gobierno-dorado);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* Specific counters for bocetos */
+#bocetos-current-slide-num {
+    color: #ffffff;
+    text-shadow: 0 0 5px var(--color-gobierno-dorado);
+}
+
 @media (max-width: 768px) {
-    .story-part {
-        flex: 0 0 85vw;
+    .bocetos-carousel .story-timeline {
+        min-height: 400px;
+    }
+    
+    .boceto-overlay h3 {
+        font-size: 1.5rem;
     }
 }
 

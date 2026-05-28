@@ -10,10 +10,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioToggle = document.getElementById('audio-toggle');
 
     const showMainSite = () => {
-        if (introContainer) introContainer.style.display = 'none';
-        if (mainSite) mainSite.classList.remove('hidden');
-        if (mainNav) mainNav.classList.remove('hidden');
+        const wipes = ['wipe-iris', 'wipe-side', 'wipe-bar'];
+        const selectedWipe = wipes[Math.floor(Math.random() * wipes.length)];
         
+        if (introContainer) {
+            // Asegurar que el sitio principal ya sea visible detrás
+            if (mainSite) mainSite.classList.remove('hidden');
+            if (mainNav) mainNav.classList.remove('hidden');
+            
+            // Limpiar clases previas y aplicar la nueva aleatoria
+            introContainer.classList.remove('wipe-iris', 'wipe-side', 'wipe-bar');
+            introContainer.classList.add(selectedWipe);
+            
+            // Forzar reflow
+            void introContainer.offsetWidth;
+            
+            // Iniciar la transición (el intro se va recortando para revelar el fondo)
+            introContainer.classList.add('active');
+        }
+
+        // Música y lógicas de carga
         if (bgMusic) {
             bgMusic.pause();
             bgMusic.currentTime = 0;
@@ -25,10 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initScrollAnimations();
         initDossiers();
-        initLazyLoading(); // Iniciar observador de visores
-        initChronicleCarousel(); // Iniciar carrusel de narrativa
-        fetchGitHubAvatars(); // Cargar fotos de perfil de GitHub
+        initLazyLoading();
+        
+        initGenericCarousel('.story-part', 'chronicle-prev', 'chronicle-next', 'current-slide-num', 'total-slides-num');
+        initGenericCarousel('.boceto-part', 'bocetos-prev', 'bocetos-next', 'bocetos-current-slide-num', 'bocetos-total-slides-num');
+        
+        fetchGitHubAvatars();
         window.scrollTo(0, 0);
+
+        // Al finalizar la animación (3s), ocultamos el contenedor por completo y mandamos estrellas al fondo
+        setTimeout(() => {
+            if (introContainer) {
+                introContainer.style.display = 'none';
+                introContainer.classList.remove('active', 'wipe-iris', 'wipe-side', 'wipe-bar');
+            }
+            // Mandar estrellas al fondo definitivo
+            const stars = document.getElementById('bg-stars');
+            if (stars) stars.style.zIndex = '-1';
+        }, 3000);
     };
 
     const fetchGitHubAvatars = () => {
@@ -54,18 +84,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const initChronicleCarousel = () => {
-        const slides = document.querySelectorAll('.story-part');
-        const prevBtn = document.getElementById('chronicle-prev');
-        const nextBtn = document.getElementById('chronicle-next');
+    const initGenericCarousel = (slideSelector, prevBtnId, nextBtnId, currentCounterId, totalCounterId) => {
+        const slides = document.querySelectorAll(slideSelector);
+        const prevBtn = document.getElementById(prevBtnId);
+        const nextBtn = document.getElementById(nextBtnId);
+        const currentCounter = document.getElementById(currentCounterId);
+        const totalCounter = document.getElementById(totalCounterId);
+        
         let currentSlide = 0;
 
         if (!slides.length || !prevBtn || !nextBtn) return;
 
+        // Inicializar contador total
+        if (totalCounter) {
+            totalCounter.textContent = slides.length.toString().padStart(2, '0');
+        }
+
         const updateSlides = (index) => {
             slides.forEach((slide, i) => {
                 slide.classList.remove('active');
-                if (i === index) slide.classList.add('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                    // Actualizar contador con formato 01, 02...
+                    if (currentCounter) {
+                        currentCounter.textContent = (i + 1).toString().padStart(2, '0');
+                    }
+                }
             });
         };
 
@@ -78,6 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
             currentSlide = (currentSlide + 1) % slides.length;
             updateSlides(currentSlide);
         });
+        
+        // Soporte para teclado (solo si es el carrusel de crónica para evitar conflictos)
+        if (prevBtnId === 'chronicle-prev') {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevBtn.click();
+                if (e.key === 'ArrowRight') nextBtn.click();
+            });
+        }
     };
 
     const showIntro = () => {
@@ -176,15 +228,15 @@ const SECTIONS_DATA = [
         id: 'ejemplo-0',
         containerId: 'ejemplo-0-container',
         sectionTitle: 'Render Principal',
-        sectionImage: 'assets/models/Elataquemasista.png', 
+        sectionImage: 'assets/render/renderfinal.png', 
         subjects: []
     },
     {
         id: 'jefaso',
         containerId: 'jefaso-container',
         sectionTitle: 'JEVVO',
-        sectionImage: 'assets/models/Jefaso/Jabba.png',
-        sectionModel: 'assets/models/Jefaso/Jabba.vox',
+        sectionImage: 'assets/render/jabbarender.png',
+        sectionModel: 'assets/models/Jefaso/jabba2.vox',
         subjects: [] 
     },
     {
@@ -193,18 +245,18 @@ const SECTIONS_DATA = [
         sectionTitle: 'Unidades de Defensa',
         sectionImage: 'assets/models/Defensas/Defensas.png',
         subjects: [
-            { name: 'Default', id: 'DF-001', model: 'assets/models/Defensas/Default.vox' },
-            { name: 'Rifle', id: 'DF-002', model: 'assets/models/Defensas/rifle.vox' },
-            { name: 'Rifleagachado', id: 'DF-003', model: 'assets/models/Defensas/rifleagachado.vox' },
-            { name: 'Espadita magica', id: 'DF-004', model: 'assets/models/Defensas/espadamistica.vox' },
-            { name: 'Sord', id: 'DF-005', model: 'assets/models/Defensas/sord.vox' },
+            { name: 'Defensor Base', id: 'DF-001', model: 'assets/models/Defensas/Default.vox' },
+            { name: 'Defensor Armado', id: 'DF-002', model: 'assets/models/Defensas/rifle.vox' },
+            { name: 'Defensor Táctico', id: 'DF-003', model: 'assets/models/Defensas/rifleagachado.vox' },
+            { name: 'Defensor EN GARDE!!', id: 'DF-004', model: 'assets/models/Defensas/espadamistica.vox' },
+            { name: 'Defensor Sord', id: 'DF-005', model: 'assets/models/Defensas/sord.vox' },
             { name: 'Mortero', id: 'DF-006', model: 'assets/models/Defensas/mortero.vox' },
-            { name: 'Mortero Pibe', id: 'DF-007', model: 'assets/models/Defensas/morteropibe.vox' },
-            { name: 'Escudito Escudoso', id: 'DF-008', model: 'assets/models/Defensas/escuditoescudoso.vox' },
-            { name: 'Aria', id: 'DF-009', model: 'assets/models/Defensas/Aria.vox' },
-            { name: 'Sunna', id: 'DF-010', model: 'assets/models/Defensas/Sunna.vox' },
-            { name: 'Nangong', id: 'DF-011', model: 'assets/models/Defensas/Nangong.vox' },
-            { name: 'Peter', id: 'DF-012', model: 'assets/models/Defensas/Petter.vox' }
+            { name: 'El Pibe del Mortero', id: 'DF-007', model: 'assets/models/Defensas/morteropibe.vox' },
+            { name: 'Defensor Defensor', id: 'DF-008', model: 'assets/models/Defensas/escuditoescudoso.vox' },
+            { name: 'Baja-1', id: 'DF-009', model: 'assets/models/Defensas/Aria.vox' },
+            { name: 'Baja-2', id: 'DF-010', model: 'assets/models/Defensas/Sunna.vox' },
+            { name: 'Baja-3', id: 'DF-011', model: 'assets/models/Defensas/Nangong.vox' },
+            { name: 'Baja-4', id: 'DF-012', model: 'assets/models/Defensas/Petter.vox' }
         ]
     },
     {
@@ -213,14 +265,14 @@ const SECTIONS_DATA = [
         sectionTitle: 'Batallón Droide',
         sectionImage: 'assets/models/Droides_Basic/Masistas.png',
         subjects: [
-            { name: 'Droide B-0', id: 'DB-001', model: 'assets/models/Droides_Basic/droide1.vox' },
-            { name: 'Droide B-1', id: 'DB-002', model: 'assets/models/Droides_Basic/droide2.vox' },
-            { name: 'Droide B-2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide3.vox' },
-            { name: 'Droide B-3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide4.vox' },
-            { name: 'Droide B-4', id: 'DB-005', model: 'assets/models/Droides_Basic/droide5.vox' },
-            { name: 'Mega Droide M-0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox' },
-            { name: 'Mega Droide M-1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' },
-            { name: 'Mega Droide M-2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox' }
+            { name: 'Droide MA-S0', id: 'DB-001', model: 'assets/models/Droides_Basic/droide1.vox' },
+            { name: 'Droide MA-S1', id: 'DB-002', model: 'assets/models/Droides_Basic/droide2.vox' },
+            { name: 'Droide MA-S2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide3.vox' },
+            { name: 'Droide MA-S3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide4.vox' },
+            { name: 'Droide MA-S4', id: 'DB-005', model: 'assets/models/Droides_Basic/droide5.vox' },
+            { name: 'Droide Ponchado CO-B0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox' },
+            { name: 'Droide Ponchado CO-B1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox' },
+            { name: 'Droide Ponchado CO-B2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox' }
         ]
     }
 ];
@@ -319,7 +371,7 @@ function renderBannerCard(container, section) {
                 <p class="loading-text">INICIALIZANDO PROYECCIÓN...</p>
             </div>` : ''}
         </div>
-        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ALTO MANDO' : 'DOCUMENTACIÓN GRÁFICA'}</div></div>
+        <div class="dossier-footer"><div class="footer-label">${isJefaso ? 'ARCHIVO VISUAL DEL ALTO MANDO SEPARATISTA' : 'VISTA GENERAL RENDERIZADA COMPLETA'}</div></div>
     `;
     container.appendChild(card);
 }
@@ -383,14 +435,14 @@ function renderSubjectCard(container, subject, globalIdx) {
     const viewerId = `vox-viewer-${globalIdx}`;
     card.innerHTML = `
         <div class="dossier-header">
-            <div class="dossier-title"><h3>Sujeto: <span>${subject.name}</span></h3></div>
+            <div class="dossier-title"><h3>Archivo: <span>${subject.name}</span></h3></div>
         </div>
         <div class="dossier-main-single">
             <div class="view-container"><div id="${viewerId}" class="vox-canvas-wrapper" data-model="${subject.model}">
                 <p class="loading-text">CARGANDO MODELO...</p>
-            </div><div class="view-tag">INTERACTIVO 3D</div></div>
+            </div><div class="view-tag">HOLOGRAMA INTERACTIVO 3D</div></div>
         </div>
-        <div class="dossier-footer"><div class="footer-label">REPORTE TÁCTICO</div></div>
+        <div class="dossier-footer"><div class="footer-label">DISEÑO 3D HECHO 100% A MANO</div></div>
     `;
     container.appendChild(card);
 }

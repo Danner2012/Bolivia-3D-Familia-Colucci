@@ -522,6 +522,89 @@ h2 {
     }
 }
 
+/* --- Bocetos Carousel - Full Image Layout --- */
+.bocetos-carousel .story-timeline {
+    min-height: 600px;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.full-image-layout {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.full-image-layout img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.8s ease;
+    background: #000;
+}
+
+.boceto-part {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.boceto-part.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+
+.boceto-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 3rem 2rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    z-index: 5;
+    text-align: center;
+}
+
+.boceto-overlay h3 {
+    font-family: var(--font-header);
+    font-size: 2.5rem;
+    margin: 0;
+    color: #ffffff;
+    /* Mixed white and yellow style */
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(184, 134, 11, 0.4),
+        2px 2px 0px var(--color-gobierno-dorado);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* Specific counters for bocetos */
+#bocetos-current-slide-num {
+    color: #ffffff;
+    text-shadow: 0 0 5px var(--color-gobierno-dorado);
+}
+
+@media (max-width: 768px) {
+    .bocetos-carousel .story-timeline {
+        min-height: 400px;
+    }
+    
+    .boceto-overlay h3 {
+        font-size: 1.5rem;
+    }
+}
+
 /* --- Expediente de Personaje (Dossier) --- */
 .dossiers-grid {
     display: grid;

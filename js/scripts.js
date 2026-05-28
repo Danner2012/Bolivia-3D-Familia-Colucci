@@ -26,7 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         initScrollAnimations();
         initDossiers();
         initLazyLoading(); // Iniciar observador de visores
-        initChronicleCarousel(); // Iniciar carrusel de narrativa
+        
+        // Iniciar carruseles
+        initGenericCarousel('.story-part', 'chronicle-prev', 'chronicle-next', 'current-slide-num', 'total-slides-num');
+        initGenericCarousel('.boceto-part', 'bocetos-prev', 'bocetos-next', 'bocetos-current-slide-num', 'bocetos-total-slides-num');
+        
         fetchGitHubAvatars(); // Cargar fotos de perfil de GitHub
         window.scrollTo(0, 0);
     };
@@ -54,12 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const initChronicleCarousel = () => {
-        const slides = document.querySelectorAll('.story-part');
-        const prevBtn = document.getElementById('chronicle-prev');
-        const nextBtn = document.getElementById('chronicle-next');
-        const currentCounter = document.getElementById('current-slide-num');
-        const totalCounter = document.getElementById('total-slides-num');
+    const initGenericCarousel = (slideSelector, prevBtnId, nextBtnId, currentCounterId, totalCounterId) => {
+        const slides = document.querySelectorAll(slideSelector);
+        const prevBtn = document.getElementById(prevBtnId);
+        const nextBtn = document.getElementById(nextBtnId);
+        const currentCounter = document.getElementById(currentCounterId);
+        const totalCounter = document.getElementById(totalCounterId);
         
         let currentSlide = 0;
 
@@ -93,11 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSlides(currentSlide);
         });
         
-        // Soporte para teclado
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') prevBtn.click();
-            if (e.key === 'ArrowRight') nextBtn.click();
-        });
+        // Soporte para teclado (solo si es el carrusel de crónica para evitar conflictos)
+        if (prevBtnId === 'chronicle-prev') {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevBtn.click();
+                if (e.key === 'ArrowRight') nextBtn.click();
+            });
+        }
     };
 
     const showIntro = () => {

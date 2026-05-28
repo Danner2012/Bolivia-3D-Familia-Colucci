@@ -211,7 +211,7 @@ function renderBannerCard(container, section) {
                 <div class="view-container"><div id="${viewerId}" class="vox-canvas-wrapper" data-model="assets/models/Jefaso/Jabba.vox">
                     <p class="loading-text">SOLICITANDO ACCESO...</p>
                 </div><div class="view-tag">VISOR 3D</div></div>
-                <div class="view-container"><div class="render-frame"><img src="${section.sectionImage}"></div><div class="view-tag">RENDER HQ</div></div>
+                <div class="view-container"><div class="render-frame"><img src="${section.sectionImage}"></div><div class="view-tag">RENDER HD</div></div>
             </div>
             <div class="dossier-footer"><div class="footer-label">ALTO MANDO</div></div>
         `;
@@ -352,7 +352,7 @@ function init3DVisor(containerId, modelPath) {
             modelGroup.position.sub(box.getCenter(new THREE.Vector3()));
             const size = box.getSize(new THREE.Vector3());
             const maxDim = Math.max(size.x, size.y, size.z);
-            camera.position.set(maxDim * 1.5, maxDim * 1.2, maxDim * 1.5);
+            camera.position.set(maxDim * 0.01, maxDim * 0.5, maxDim * 1.4);
             controls.update();
         } catch (e) { container.innerHTML = `<div style="color:red; font-size:10px;">ERROR: ${e.message}</div>`; }
     });

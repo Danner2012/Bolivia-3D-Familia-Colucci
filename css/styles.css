@@ -21,7 +21,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 1100; /* Arriba del fondo negro del intro para que se vean */
     pointer-events: none;
 }
 
@@ -34,7 +34,7 @@ h1, h2, h3 {
     display: none;
 }
 
-/* --- Intro Styles --- */
+/* --- Transiciones Estilo Star Wars / PowerPoint (Wipes) --- */
 #intro-container {
     width: 100vw;
     height: 100vh;
@@ -48,6 +48,9 @@ h1, h2, h3 {
     left: 0;
     z-index: 1000;
     overflow: hidden;
+    /* Transición lenta y lineal para ese feeling de PowerPoint */
+    transition: clip-path 3s linear;
+    clip-path: inset(0 0 0 0);
 }
 
 .intro-text {
@@ -63,8 +66,12 @@ h1, h2, h3 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1500;
+    z-index: 1200; /* Por encima de las estrellas */
     text-shadow: 0 0 15px rgba(123, 200, 240, 0.4);
+}
+
+#crawl {
+    z-index: 1200; /* Por encima de las estrellas */
 }
 
 .intro-logo-crawl {
@@ -91,8 +98,38 @@ h1, h2, h3 {
     font-size: 1.2rem;
     text-transform: uppercase;
     transition: all 0.3s ease;
-    z-index: 2000;
+    z-index: 1300; /* El botón siempre arriba */
     letter-spacing: 2px;
+}
+
+#skip-intro:hover {
+    background: var(--color-ui-texto-crawl);
+    color: #000;
+    box-shadow: 0 0 20px var(--color-ui-texto-crawl);
+}
+
+/* Efecto 1: Barrido Lateral (Side Wipe) */
+#intro-container.wipe-side.active {
+    clip-path: inset(0 100% 0 0);
+}
+
+/* Efecto 2: Barrido de Cortina (Iris) */
+#intro-container.wipe-iris {
+    clip-path: circle(100% at 50% 50%);
+}
+#intro-container.wipe-iris.active {
+    clip-path: circle(0% at 50% 50%);
+}
+
+/* Efecto 3: Barrido Vertical (Bar Wipe) */
+#intro-container.wipe-bar.active {
+    clip-path: inset(0 0 100% 0);
+}
+
+/* El main site siempre abajo del intro durante la transición */
+main#main-site {
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fade-in-out {

@@ -18,13 +18,9 @@
     <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/VOXLoader.js"></script>
     <script src="https://unpkg.com/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="js/background.js"></script>
   </head>
 
   <body>
-    <!-- Fondo 3D de Estrellas -->
-    <canvas id="bg-stars"></canvas>
-
     <!-- Control de Audio -->
     <audio id="bg-music" src="assets/music/intro.mpeg" loop autoplay></audio>
     <audio id="main-music" src="assets/music/principal.mpeg" loop></audio>
@@ -312,7 +308,7 @@
         <div id="jefaso-container" class="dossiers-grid"></div>
       </section>
 
-      <div class="saber-divider blue"></div>
+      <div class="saber-divider red"></div>
 
       <!-- Ejemplo 2: Defensas -->
       <section id="ejemplo-2" class="vfx-reveal">
@@ -322,7 +318,7 @@
         <div id="defensas-container" class="dossiers-grid"></div>
       </section>
 
-      <div class="saber-divider red"></div>
+      <div class="saber-divider blue"></div>
 
       <!-- Ejemplo 3: Droides -->
       <section id="ejemplo-3" class="vfx-reveal">
@@ -332,6 +328,11 @@
 
         <div class="sub-section-header"></div>
         <div id="droides-basic-container" class="dossiers-grid"></div>
+
+        <div class="sub-section-header" style="margin-top: 4rem">
+          <h3>Droides Mega</h3>
+        </div>
+        <div id="droides-mega-container" class="dossiers-grid"></div>
       </section>
 
       <footer>

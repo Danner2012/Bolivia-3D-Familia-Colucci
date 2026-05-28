@@ -10,10 +10,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioToggle = document.getElementById('audio-toggle');
 
     const showMainSite = () => {
-        if (introContainer) introContainer.style.display = 'none';
-        if (mainSite) mainSite.classList.remove('hidden');
-        if (mainNav) mainNav.classList.remove('hidden');
+        const wipes = ['wipe-iris', 'wipe-side', 'wipe-bar'];
+        const selectedWipe = wipes[Math.floor(Math.random() * wipes.length)];
         
+        if (introContainer) {
+            // Asegurar que el sitio principal ya sea visible detrás
+            if (mainSite) mainSite.classList.remove('hidden');
+            if (mainNav) mainNav.classList.remove('hidden');
+            
+            // Limpiar clases previas y aplicar la nueva aleatoria
+            introContainer.classList.remove('wipe-iris', 'wipe-side', 'wipe-bar');
+            introContainer.classList.add(selectedWipe);
+            
+            // Forzar reflow
+            void introContainer.offsetWidth;
+            
+            // Iniciar la transición (el intro se va recortando para revelar el fondo)
+            introContainer.classList.add('active');
+        }
+
+        // Música y lógicas de carga
         if (bgMusic) {
             bgMusic.pause();
             bgMusic.currentTime = 0;
@@ -25,14 +41,21 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initScrollAnimations();
         initDossiers();
-        initLazyLoading(); // Iniciar observador de visores
+        initLazyLoading();
         
-        // Iniciar carruseles
         initGenericCarousel('.story-part', 'chronicle-prev', 'chronicle-next', 'current-slide-num', 'total-slides-num');
         initGenericCarousel('.boceto-part', 'bocetos-prev', 'bocetos-next', 'bocetos-current-slide-num', 'bocetos-total-slides-num');
         
-        fetchGitHubAvatars(); // Cargar fotos de perfil de GitHub
+        fetchGitHubAvatars();
         window.scrollTo(0, 0);
+
+        // Al finalizar la animación (2.5s), ocultamos el contenedor por completo
+        setTimeout(() => {
+            if (introContainer) {
+                introContainer.style.display = 'none';
+                introContainer.classList.remove('active', 'wipe-iris', 'wipe-side', 'wipe-bar');
+            }
+        }, 2500);
     };
 
     const fetchGitHubAvatars = () => {

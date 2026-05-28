@@ -27,7 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
         initDossiers();
         initLazyLoading(); // Iniciar observador de visores
         initChronicleCarousel(); // Iniciar carrusel de narrativa
+        fetchGitHubAvatars(); // Cargar fotos de perfil de GitHub
         window.scrollTo(0, 0);
+    };
+
+    const fetchGitHubAvatars = () => {
+        document.querySelectorAll('.member-card[data-github]').forEach(card => {
+            const username = card.getAttribute('data-github');
+            const img = card.querySelector('.member-avatar');
+            
+            if (username && img) {
+                fetch(`https://api.github.com/users/${username}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.avatar_url) {
+                            img.src = data.avatar_url;
+                        } else {
+                            img.src = 'https://github.com/identicons/jedi.png'; // Fallback
+                        }
+                    })
+                    .catch(err => {
+                        console.error(`Error al cargar avatar de ${username}:`, err);
+                        img.src = 'https://github.com/identicons/jedi.png';
+                    });
+            }
+        });
     };
 
     const initChronicleCarousel = () => {

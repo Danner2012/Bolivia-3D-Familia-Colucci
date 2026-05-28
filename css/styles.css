@@ -268,13 +268,45 @@ h2 {
     transform: rotateY(180deg);
     background: var(--color-gobierno-azul-noche);
     color: var(--color-ui-texto-crawl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0; /* Sin padding para que la imagen llegue al borde */
+    overflow: hidden;
 }
 
-.rank {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    color: var(--color-gobierno-azul);
-    letter-spacing: 2px;
+.card-back-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ocupa todo el espacio disponible */
+    filter: brightness(0.8); /* Un poco más oscuro para no deslumbrar */
+}
+
+.member-avatar-container {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(45deg, var(--color-ui-holograma), transparent);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+.member-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: brightness(1.1) contrast(1.1); /* Natural colors with a slight pop */
+    border: 2px solid rgba(0, 255, 136, 0.5);
+    background: #000;
+}
+
+.card-front h3 {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
 }
 
 /* Chronicle Section - Single Slide Controlled Carousel */

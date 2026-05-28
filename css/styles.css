@@ -59,7 +59,8 @@ h1, h2, h3 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1500;       
+    z-index: 1500;
+    text-shadow: 0 0 15px rgba(123, 200, 240, 0.4);
 }
 
 .intro-logo-crawl {

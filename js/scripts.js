@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainSite) mainSite.classList.remove('hidden');
         if (mainNav) mainNav.classList.remove('hidden');
         initScrollAnimations();
-        initDossiers(); // Inicializar dossiers al mostrar el sitio
+        initDossiers();
         window.scrollTo(0, 0);
     };
 
@@ -26,60 +26,97 @@ document.addEventListener('DOMContentLoaded', () => {
     if (skipButton) skipButton.addEventListener('click', showMainSite);
 });
 
-// --- Gestión Dinámica de Dossiers ---
+// --- Gestión Dinámica de Dossiers por Secciones ---
 function initDossiers() {
-    const container = document.getElementById('dossiers-container');
-    if (!container) return;
-
-    const subjects = [
-        { name: 'Personaje Base', id: 'BW-001', model: 'assets/models/personaje_base.vox', render: 'assets/render/personaje_base.png' },
-        { name: 'Milico Aria', id: 'BW-002', model: 'assets/models/Defensas/Aria.vox', render: 'assets/render/Aria.png' },
-        { name: 'Milico Sunna', id: 'BW-004', model: 'assets/models/Defensas/Sunna.vox', render: 'assets/render/Sunna.png' },
-        { name: 'Milico Nangong', id: 'BW-005', model: 'assets/models/Defensas/Nangong.vox', render: 'assets/render/Nangong.png' },
-        { name: 'Milico Default', id: 'BW-006', model: 'assets/models/Defensas/Default.vox', render: 'assets/render/Default.png' }
+    const sections = [
+        {
+            containerId: 'jefaso-container',
+            subjects: [
+                // Carpeta Jefaso está vacía actualmente
+            ]
+        },
+        {
+            containerId: 'defensas-container',
+            subjects: [
+                { name: 'Aria', id: 'DF-001', model: 'assets/models/Defensas/Aria.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Peter', id: 'DF-002', model: 'assets/models/Defensas/Peter.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Sunna', id: 'DF-003', model: 'assets/models/Defensas/Sunna.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Nangong', id: 'DF-004', model: 'assets/models/Defensas/Nangong.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Default Defensa', id: 'DF-005', model: 'assets/models/Defensas/Default.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Mortero', id: 'DF-006', model: 'assets/models/Defensas/mortero.vox', render: 'assets/render/personaje_base.png' }
+            ]
+        },
+        {
+            containerId: 'droides-basic-container',
+            subjects: [
+                { name: 'Droide B-0', id: 'DB-001', model: 'assets/models/Droides_Basic/droide0.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Droide B-1', id: 'DB-002', model: 'assets/models/Droides_Basic/droide1.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Droide B-2', id: 'DB-003', model: 'assets/models/Droides_Basic/droide2.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Droide B-3', id: 'DB-004', model: 'assets/models/Droides_Basic/droide3.vox', render: 'assets/render/personaje_base.png' }
+            ]
+        },
+        {
+            containerId: 'droides-mega-container',
+            subjects: [
+                { name: 'Mega Droide M-0', id: 'DM-001', model: 'assets/models/Droides_Mega/droide_m0.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Mega Droide M-1', id: 'DM-002', model: 'assets/models/Droides_Mega/droide_m1.vox', render: 'assets/render/personaje_base.png' },
+                { name: 'Mega Droide M-2', id: 'DM-003', model: 'assets/models/Droides_Mega/droide_m2.vox', render: 'assets/render/personaje_base.png' }
+            ]
+        }
     ];
 
-    subjects.forEach((subject, index) => {
-        const dossier = document.createElement('div');
-        dossier.className = 'character-dossier vfx-reveal';
-        const viewerId = `vox-viewer-${index}`;
-        
-        dossier.innerHTML = `
-            <div class="dossier-header">
-                <div class="dossier-title">
-                    <h3>Sujeto: <span>${subject.name}</span></h3>
-                    <p class="dossier-id">ID_REF: ${subject.id}</p>
-                </div>
-            </div>
-            <div class="dossier-main">
-                <div class="view-container">
-                    <div id="${viewerId}" class="vox-canvas-wrapper">
-                        <p class="loading-text">INICIALIZANDO VISOR 3D...</p>
-                    </div>
-                    <div class="view-tag">MODELO INTERACTIVO VÓXEL</div>
-                </div>
-                <div class="view-container">
-                    <div class="render-frame">
-                        <img src="${subject.render}" alt="Render HQ de ${subject.name}">
-x', render: 'assets/render/personaje_base.png' },
-        { name: 'Milico Peter', id: 'BW-00                    </div>
-                    <div class="view-tag">RENDERIZADO FINAL HQ</div>
-                </div>
-            </div>
-            <div class="dossier-footer">
-                <div class="footer-label">REPORTE TÁCTICO:</div>
-                <p>Análisis del prototipo ${subject.name}. Unidad especializada para las crónicas de la galaxia paceña.</p>
-            </div>
-        `;
-        
-        container.appendChild(dossier);
+    let globalIndex = 0;
+    sections.forEach(section => {
+        const container = document.getElementById(section.containerId);
+        if (!container) return;
 
-        // Inicializar visor 3D para este dossier
-        setTimeout(() => {
-            if (typeof THREE !== 'undefined') {
-                init3DVisor(viewerId, subject.model);
-            }
-        }, 100 * index);
+        if (section.subjects.length === 0) {
+            container.innerHTML = '<p style="grid-column: 1/-1; opacity: 0.5; padding: 2rem; text-align: center;">SIN DATOS DE INTELIGENCIA (Carpeta vacía)</p>';
+            return;
+        }
+
+        section.subjects.forEach(subject => {
+            const dossier = document.createElement('div');
+            dossier.className = 'character-dossier vfx-reveal';
+            const viewerId = `vox-viewer-${globalIndex}`;
+            
+            dossier.innerHTML = `
+                <div class="dossier-header">
+                    <div class="dossier-title">
+                        <h3>Sujeto: <span>${subject.name}</span></h3>
+                        <p class="dossier-id">ID_REF: ${subject.id}</p>
+                    </div>
+                </div>
+                <div class="dossier-main">
+                    <div class="view-container">
+                        <div id="${viewerId}" class="vox-canvas-wrapper">
+                            <p class="loading-text">INICIALIZANDO VISOR 3D...</p>
+                        </div>
+                        <div class="view-tag">MODELO INTERACTIVO VÓXEL</div>
+                    </div>
+                    <div class="view-container">
+                        <div class="render-frame">
+                            <img src="${subject.render}" alt="Render HQ de ${subject.name}">
+                        </div>
+                        <div class="view-tag">RENDERIZADO FINAL HQ</div>
+                    </div>
+                </div>
+                <div class="dossier-footer">
+                    <div class="footer-label">REPORTE TÁCTICO:</div>
+                    <p>Análisis del sujeto ${subject.name}. Registrado en los archivos de la Galaxia Paceña.</p>
+                </div>
+            `;
+            
+            container.appendChild(dossier);
+
+            setTimeout(() => {
+                if (typeof THREE !== 'undefined') {
+                    init3DVisor(viewerId, subject.model);
+                }
+            }, 100 * globalIndex);
+            
+            globalIndex++;
+        });
     });
 }
 

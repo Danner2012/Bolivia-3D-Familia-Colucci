@@ -21,7 +21,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 1100; /* Arriba del fondo negro del intro para que se vean */
     pointer-events: none;
 }
 
@@ -48,8 +48,8 @@ h1, h2, h3 {
     left: 0;
     z-index: 1000;
     overflow: hidden;
-    /* Transición de revelado lenta y "vegana" */
-    transition: clip-path 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Transición lenta y lineal para ese feeling de PowerPoint */
+    transition: clip-path 3s linear;
     clip-path: inset(0 0 0 0);
 }
 
@@ -66,8 +66,12 @@ h1, h2, h3 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1500;
+    z-index: 1200; /* Por encima de las estrellas */
     text-shadow: 0 0 15px rgba(123, 200, 240, 0.4);
+}
+
+#crawl {
+    z-index: 1200; /* Por encima de las estrellas */
 }
 
 .intro-logo-crawl {
@@ -94,7 +98,7 @@ h1, h2, h3 {
     font-size: 1.2rem;
     text-transform: uppercase;
     transition: all 0.3s ease;
-    z-index: 2000;
+    z-index: 1300; /* El botón siempre arriba */
     letter-spacing: 2px;
 }
 
@@ -106,7 +110,7 @@ h1, h2, h3 {
 
 /* Efecto 1: Barrido Lateral (Side Wipe) */
 #intro-container.wipe-side.active {
-    clip-path: inset(0 0 0 100%);
+    clip-path: inset(0 100% 0 0);
 }
 
 /* Efecto 2: Barrido de Cortina (Iris) */
@@ -119,12 +123,13 @@ h1, h2, h3 {
 
 /* Efecto 3: Barrido Vertical (Bar Wipe) */
 #intro-container.wipe-bar.active {
-    clip-path: inset(100% 0 0 0);
+    clip-path: inset(0 0 100% 0);
 }
 
-/* Eliminamos el overlay negro ya que el intro se auto-revela */
-#transition-overlay {
-    display: none;
+/* El main site siempre abajo del intro durante la transición */
+main#main-site {
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fade-in-out {

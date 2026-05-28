@@ -49,13 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchGitHubAvatars();
         window.scrollTo(0, 0);
 
-        // Al finalizar la animación (2.5s), ocultamos el contenedor por completo
+        // Al finalizar la animación (3s), ocultamos el contenedor por completo y mandamos estrellas al fondo
         setTimeout(() => {
             if (introContainer) {
                 introContainer.style.display = 'none';
                 introContainer.classList.remove('active', 'wipe-iris', 'wipe-side', 'wipe-bar');
             }
-        }, 2500);
+            // Mandar estrellas al fondo definitivo
+            const stars = document.getElementById('bg-stars');
+            if (stars) stars.style.zIndex = '-1';
+        }, 3000);
     };
 
     const fetchGitHubAvatars = () => {

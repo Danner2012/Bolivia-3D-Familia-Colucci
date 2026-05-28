@@ -3,28 +3,81 @@ document.addEventListener('DOMContentLoaded', () => {
     const introContainer = document.getElementById('intro-container');
     const mainSite = document.getElementById('main-site');
     const mainNav = document.getElementById('main-nav');
+    
+    // Elementos de Audio
+    const bgMusic = document.getElementById('bg-music');
+    const audioToggle = document.getElementById('audio-toggle');
 
     const showMainSite = () => {
         if (introContainer) introContainer.style.display = 'none';
         if (mainSite) mainSite.classList.remove('hidden');
         if (mainNav) mainNav.classList.remove('hidden');
+        
+        // Detener la música al saltar la intro
+        if (bgMusic) {
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+        }
+        
         initScrollAnimations();
         initDossiers(); // Inicializar dossiers al mostrar el sitio
         window.scrollTo(0, 0);
     };
 
-    const initScrollAnimations = () => {
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
+    // Lógica de Audio
+    if (bgMusic && audioToggle) {
+        bgMusic.volume = 1.0; // Asegurar volumen al máximo
+
+        const playMusic = () => {
+            bgMusic.play().then(() => {
+                console.log("Audio iniciado correctamente.");
+                // Remover listeners una vez que inicie
+                document.removeEventListener('click', playMusic);
+                document.removeEventListener('keydown', playMusic);
+            }).catch(error => {
+                console.log("Autoplay bloqueado. Esperando interacción.");
             });
-        }, observerOptions);
-        document.querySelectorAll('.vfx-reveal').forEach(el => observer.observe(el));
-    };
+        };
+
+        // Intentar reproducir inmediatamente (puede fallar)
+        playMusic();
+
+        // Agregar listeners para iniciar audio en la primera interacción real
+        document.addEventListener('click', playMusic);
+        document.addEventListener('keydown', playMusic);
+
+        // Control de silencio
+        audioToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar que el clic en el botón active el listener del documento innecesariamente
+            bgMusic.muted = !bgMusic.muted;
+            audioToggle.classList.toggle('muted');
+            audioToggle.innerHTML = bgMusic.muted ? '🔇' : '🔊';
+            
+            // Si estaba pausado por bloqueo, intentar reproducir al hacer clic en el botón
+            if (bgMusic.paused) playMusic();
+        });
+    }
 
     if (skipButton) skipButton.addEventListener('click', showMainSite);
+    
+    // También permitir saltar intro con la tecla espacio
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && introContainer && introContainer.style.display !== 'none') {
+            e.preventDefault();
+            showMainSite();
+        }
+    });
 });
+
+const initScrollAnimations = () => {
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, observerOptions);
+    document.querySelectorAll('.vfx-reveal').forEach(el => observer.observe(el));
+};
 
 // --- Gestión Dinámica de Dossiers ---
 function initDossiers() {

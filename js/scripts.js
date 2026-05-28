@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Elementos de Audio
     const bgMusic = document.getElementById('bg-music');
+    const mainMusic = document.getElementById('main-music');
     const audioToggle = document.getElementById('audio-toggle');
 
     const showMainSite = () => {
@@ -13,10 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainSite) mainSite.classList.remove('hidden');
         if (mainNav) mainNav.classList.remove('hidden');
         
-        // Detener la música al saltar la intro
+        // Transición de música: detener intro, iniciar principal
         if (bgMusic) {
             bgMusic.pause();
             bgMusic.currentTime = 0;
+        }
+        if (mainMusic) {
+            mainMusic.muted = bgMusic ? bgMusic.muted : false;
+            mainMusic.play().catch(e => console.log("Error al iniciar música principal"));
         }
         
         initScrollAnimations();
@@ -26,35 +31,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Lógica de Audio
     if (bgMusic && audioToggle) {
-        bgMusic.volume = 1.0; // Asegurar volumen al máximo
+        bgMusic.volume = 1.0; 
+        if (mainMusic) mainMusic.volume = 1.0;
 
-        const playMusic = () => {
-            bgMusic.play().then(() => {
-                console.log("Audio iniciado correctamente.");
-                // Remover listeners una vez que inicie
-                document.removeEventListener('click', playMusic);
-                document.removeEventListener('keydown', playMusic);
-            }).catch(error => {
-                console.log("Autoplay bloqueado. Esperando interacción.");
-            });
+        const forcePlay = () => {
+            if (introContainer && introContainer.style.display !== 'none') {
+                bgMusic.play().then(() => {
+                    console.log("Audio de intro forzado con éxito.");
+                    // Una vez que suena, quitamos los listeners de "intento"
+                    document.removeEventListener('mousedown', forcePlay);
+                    document.removeEventListener('keydown', forcePlay);
+                    document.removeEventListener('touchstart', forcePlay);
+                }).catch(err => {
+                    console.log("Esperando interacción para sonar...");
+                });
+            }
         };
 
-        // Intentar reproducir inmediatamente (puede fallar)
-        playMusic();
+        // Intentar sonar al cargar
+        forcePlay();
 
-        // Agregar listeners para iniciar audio en la primera interacción real
-        document.addEventListener('click', playMusic);
-        document.addEventListener('keydown', playMusic);
+        // Listeners globales agresivos (mousedown y touchstart son más rápidos que click)
+        document.addEventListener('mousedown', forcePlay);
+        document.addEventListener('keydown', forcePlay);
+        document.addEventListener('touchstart', forcePlay);
 
-        // Control de silencio
+        // Control de silencio sincronizado
         audioToggle.addEventListener('click', (e) => {
-            e.stopPropagation(); // Evitar que el clic en el botón active el listener del documento innecesariamente
-            bgMusic.muted = !bgMusic.muted;
-            audioToggle.classList.toggle('muted');
-            audioToggle.innerHTML = bgMusic.muted ? '🔇' : '🔊';
+            e.stopPropagation();
+            const isMuted = !bgMusic.muted;
             
-            // Si estaba pausado por bloqueo, intentar reproducir al hacer clic en el botón
-            if (bgMusic.paused) playMusic();
+            if (bgMusic) bgMusic.muted = isMuted;
+            if (mainMusic) mainMusic.muted = isMuted;
+            
+            audioToggle.classList.toggle('muted');
+            audioToggle.innerHTML = isMuted ? '🔇' : '🔊';
+            
+            // Si el usuario le da al botón y estaba pausado por el navegador, forzamos play
+            if (!isMuted) {
+                if (introContainer && introContainer.style.display !== 'none') {
+                    bgMusic.play();
+                } else if (mainMusic) {
+                    mainMusic.play();
+                }
+            }
         });
     }
 

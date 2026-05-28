@@ -1,20 +1,25 @@
 /**
- * Bolivia Wars: Hyperdrive / Warp Speed Background
- * Stars travel towards the camera to create a space travel effect.
+ * Bolivia Wars: Hyperdrive / Warp Speed Background (Pure Starfield)
+ * Stars travel towards the camera.
+ * Reacts to scroll speed with smooth interpolation.
+ * Base speed is very slow (contemplative).
  */
 
 (function() {
     let scene, camera, renderer, stars, starGeo;
     let starCount = 6000;
-    let velocity = 2; // Speed of travel
+    
+    // Velocity variables
+    let baseVelocity = 0.05; // Very slow base speed
+    let targetVelocity = baseVelocity;
+    let currentVelocity = baseVelocity;
+    let scrollTimeout;
 
     function init() {
         scene = new THREE.Scene();
 
-        // Camera looks straight ahead
         camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
         camera.position.z = 1;
-        // No extra rotation needed for warp effect, we look down the Z axis
 
         renderer = new THREE.WebGLRenderer({
             canvas: document.getElementById('bg-stars'),
@@ -28,16 +33,15 @@
 
         for (let i = 0; i < starCount; i++) {
             // Spread stars in a large box
-            positions[i * 3] = Math.random() * 600 - 300;     // X
-            positions[i * 3 + 1] = Math.random() * 600 - 300; // Y
-            positions[i * 3 + 2] = Math.random() * 600 - 300; // Z
+            positions[i * 3] = Math.random() * 800 - 400;     // X
+            positions[i * 3 + 1] = Math.random() * 800 - 400; // Y
+            positions[i * 3 + 2] = Math.random() * 800 - 400; // Z
             
-            velocities[i] = Math.random() * 0.5 + 0.2; // Individual star speed variation
+            velocities[i] = Math.random() * 0.2 + 0.05; // Variation
         }
 
         starGeo = new THREE.BufferGeometry();
         starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        // We'll store velocities in a custom property for access during animation
         starGeo.userData = { velocities: velocities };
 
         const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/circle.png');
@@ -53,8 +57,22 @@
         stars = new THREE.Points(starGeo, starMaterial);
         scene.add(stars);
 
+        // --- Event Listeners ---
         window.addEventListener('resize', onWindowResize, false);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
         animate();
+    }
+
+    function handleScroll() {
+        // Boost velocity on scroll (Hyperspace jump!)
+        targetVelocity = 12.0; 
+        
+        // Reset to base velocity after a short delay
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            targetVelocity = baseVelocity;
+        }, 200);
     }
 
     function onWindowResize() {
@@ -66,29 +84,28 @@
     function animate() {
         requestAnimationFrame(animate);
         
+        // Smoothly interpolate velocity
+        currentVelocity += (targetVelocity - currentVelocity) * 0.05;
+
         const positions = starGeo.attributes.position.array;
         const vels = starGeo.userData.velocities;
 
         for (let i = 0; i < starCount; i++) {
             // Move star towards camera (increase Z)
-            // In Three.js, looking forward usually means stars move from negative Z to positive Z or vice versa
-            // Let's make them move from -300 to 300.
-            positions[i * 3 + 2] += velocity + vels[i];
+            positions[i * 3 + 2] += currentVelocity + vels[i];
 
-            // If star passes the camera (Z > 200), reset it to the back
-            if (positions[i * 3 + 2] > 300) {
-                positions[i * 3 + 2] = -300;
-                // Optional: Randomize X and Y again for variety
-                positions[i * 3] = Math.random() * 600 - 300;
-                positions[i * 3 + 1] = Math.random() * 600 - 300;
+            // If star passes the camera, reset it to the back
+            if (positions[i * 3 + 2] > 400) {
+                positions[i * 3 + 2] = -400;
+                positions[i * 3] = Math.random() * 800 - 400;
+                positions[i * 3 + 1] = Math.random() * 800 - 400;
             }
         }
 
-        // Tell Three.js the positions have changed
         starGeo.attributes.position.needsUpdate = true;
         
-        // Gentle rotation for extra dynamism
-        stars.rotation.z += 0.001;
+        // Gentle spiral rotation
+        stars.rotation.z += 0.0005;
 
         renderer.render(scene, camera);
     }

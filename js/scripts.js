@@ -202,7 +202,7 @@ const SECTIONS_DATA = [
         id: 'ejemplo-0',
         containerId: 'ejemplo-0-container',
         sectionTitle: 'Render Principal',
-        sectionImage: 'assets/models/Elataquemasista.png', 
+        sectionImage: 'assets/render/renderfinal.png', 
         subjects: []
     },
     {
